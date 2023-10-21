@@ -5,21 +5,20 @@ import { useNavigate } from "react-router-dom";
 import { materialsFetch } from "../../slices/sliceMaterials";
 
 export default function MaterialsList() {
-
     const dispatch = useDispatch();
-    const { stateMaterials } = useSelector((state) => state.materials); //deklarasi state yang diambil dari sliceMaterials.js
+    const { stateMaterials, stateRefreshMat } = useSelector((state) => state.materials); //deklarasi state yang diambil dari sliceMaterials.js
     const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(materialsFetch());
-    }, [dispatch]);
+    }, [stateRefreshMat]);
 
     // mengeluarkan isi data dari dalam state material
     const rows =
         stateMaterials &&
         stateMaterials.map((item) => {
             return {
-                id: item.materials_id,
+                id: item.material_id,
                 mName: item.material_name,
                 mSupName: item.supplier_name,
                 mPrice: item.price,
@@ -27,7 +26,8 @@ export default function MaterialsList() {
             };
         });
     // new Date(new Date(item.created_at).getTime() + 7 * 60 * 60 * 1000).toISOString().split('T')[0]
-    const validRows = rows.filter((row) => row.id !== undefined && row.id !== null);
+    
+    const validRows = rows ? rows.filter((row) => row.id !== undefined && row.id !== null) : "";
 
     //memasukkan data kedalam kolom tampilan tabel
     const columns = [

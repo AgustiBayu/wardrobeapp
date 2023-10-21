@@ -4,21 +4,19 @@ import { toast } from 'react-toastify';
 import { setHeaders, url } from './api';
 
 const initialState = {
-    stateMaterials: [],
-    stateRefreshMat: 0,
-    stateSelectedMat: [],
+    stateSupplier: [],
     status: null,
     createStatus: null,
     editStatus: null,
     deleteStatus: null,
 };
 
-//fetch materials
-export const materialsFetch = createAsyncThunk(
-    "materials/materialsFetch",
+//fetch supplier
+export const supplierFetch = createAsyncThunk(
+    "supplier/supplierFetch",
     async () => {
         try {
-            const response = await axios.get(`${url}/material`);
+            const response = await axios.get(`${url}/supplier`);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -27,13 +25,13 @@ export const materialsFetch = createAsyncThunk(
     }
 );
 
-//create materialss
-export const materialsCreate = createAsyncThunk(
-    "materials/materialsCreate",
+//create supplier
+export const supplierCreate = createAsyncThunk(
+    "supplier/supplierCreate",
     async (values) => {
         try {
             const response = await axios.post(
-                `${url}/material`,
+                `${url}/supplier`,
                 values,
                 setHeaders(),
             );
@@ -48,14 +46,15 @@ export const materialsCreate = createAsyncThunk(
     }
 );
 
-//edit materials
-export const materialsEdit = createAsyncThunk(
-    "materials/materialsEdit",
+//edit supplier
+export const supplierEdit = createAsyncThunk(
+    "supplier/supplierEdit",
     async (values) => {
+        console.log(values);
         try {
             const response = await axios.put(
-                `${url}/material/${values.material.materialId}`,
-                values.material,
+                `${url}/supplier/${values.supplier.supplierId}`,
+                values.supplier,
                 setHeaders(),
             );
 
@@ -69,13 +68,14 @@ export const materialsEdit = createAsyncThunk(
     }
 );
 
-//delete materials
-export const materialsDelete = createAsyncThunk(
-    "materials/materialsDelete",
-    async (materialId) => {
+//delete supplier
+export const supplierDelete = createAsyncThunk(
+    "supplier/supplierDelete",
+    async (supplierId) => {
+        console.log(supplierId);
         try {
             const response = await axios.delete(
-                `${url}/material/${materialId}`,
+                `${url}/supplier/${supplierId}`,
                 setHeaders(),
             );
 
@@ -89,12 +89,13 @@ export const materialsDelete = createAsyncThunk(
     }
 );
 
-//fetch materials by ID
-export const materialsFetchById = createAsyncThunk(
-    "materials/materialsFetchById",
-    async (materialId) => {
+//fetch supplier by ID
+export const supplierFetchById = createAsyncThunk(
+    "supplier/supplierFetchById",
+    async (supplierId) => {
         try {
-            const response = await axios.get(`${url}/material/${materialId}`);
+            const response = await axios.get(`${url}/supplier/${supplierId}`);
+            console.log(response.data);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -104,46 +105,44 @@ export const materialsFetchById = createAsyncThunk(
 );
 
 //redux reducers atau pembuatan state untuk digunakan pada suatu komponen
-const sliceMaterials = createSlice({
-    name: "materials",
+const sliceSupplier = createSlice({
+    name: "supplier",
     initialState,
     reducers: {},
     extraReducers: {
-        [materialsFetch.pending]: (state, action) => {
+        [supplierFetch.pending]: (state, action) => {
             state.status = "pending";
         },
-        [materialsFetch.fulfilled]: (state, action) => {
-            state.stateMaterials = action.payload;
+        [supplierFetch.fulfilled]: (state, action) => {
+            state.stateSupplier = action.payload;
             state.status = "success";
         },
-        [materialsFetch.rejected]: (state, action) => {
+        [supplierFetch.rejected]: (state, action) => {
             state.status = "rejected";
         },
-        [materialsCreate.pending]: (state, action) => {
+        [supplierCreate.pending]: (state, action) => {
             state.status = "pending";
         },
-        [materialsCreate.fulfilled]: (state, action) => {
-            state.stateMaterials.push(action.payload);
+        [supplierCreate.fulfilled]: (state, action) => {
+            state.stateSupplier.push(action.payload);
             state.createStatus = "success";
-            state.stateRefreshMat = Math.random();
             toast.success("Produk Telah Dibuat!", {
                 position: "bottom-left"
             });
         },
-        [materialsCreate.rejected]: (state, action) => {
+        [supplierCreate.rejected]: (state, action) => {
             state.status = "rejected";
         },
-        [materialsEdit.pending]: (state, action) => {
+        [supplierEdit.pending]: (state, action) => {
             state.editStatus = "pending";
         },
-        [materialsEdit.fulfilled]: (state, action) => {
+        [supplierEdit.fulfilled]: (state, action) => {
             if (action.payload) {
-                const updatedCategory = state.stateMaterials.map((material) =>
-                    material.materials_id === action.payload.materials_id ? action.payload : material
+                const updatedCategory = state.stateSupplier.map((material) =>
+                    material.supplier_id === action.payload.supplier_id ? action.payload : material
                 );
-                state.stateMaterials = updatedCategory;
+                state.stateSupplier = updatedCategory;
                 state.editStatus = "success";
-                state.stateRefreshMat = Math.random();
                 toast.info("Bahan Baku Telah Diedit!", {
                     position: "bottom-left",
                 });
@@ -153,20 +152,19 @@ const sliceMaterials = createSlice({
                 });
             }
         },
-        [materialsEdit.rejected]: (state, action) => {
+        [supplierEdit.rejected]: (state, action) => {
             state.editStatus = "rejected";
         },
-        [materialsDelete.pending]: (state, action) => {
+        [supplierDelete.pending]: (state, action) => {
             state.deleteStatus = "pending";
         },
-        [materialsDelete.fulfilled]: (state, action) => {
+        [supplierDelete.fulfilled]: (state, action) => {
             if (action.payload) {
-                const newList = state.stateMaterials.filter(
-                    (item) => item._id !== action.payload.materials_id
+                const newList = state.stateSupplier.filter(
+                    (item) => item._id !== action.payload.supplier_id
                 );
-                state.stateMaterials = newList;
+                state.stateSupplier = newList;
                 state.deleteStatus = "success";
-                state.stateRefreshMat = Math.random();
                 toast.success("Bahan Baku Telah Didelete!", {
                     position: "bottom-left",
                 });
@@ -176,20 +174,20 @@ const sliceMaterials = createSlice({
                 });
             }
         },
-        [materialsDelete.rejected]: (state, action) => {
+        [supplierDelete.rejected]: (state, action) => {
             state.deleteStatus = "rejected";
         },
-        [materialsFetchById.pending]: (state, action) => {
+        [supplierFetchById.pending]: (state, action) => {
             state.status = "pending";
         },
-        [materialsFetchById.fulfilled]: (state, action) => {
+        [supplierFetchById.fulfilled]: (state, action) => {
             state.stateSelectedProd = action.payload;
             state.status = "success";
         },
-        [materialsFetchById.rejected]: (state, action) => {
+        [supplierFetchById.rejected]: (state, action) => {
             state.status = "rejected";
         },
     },
 });
 
-export default sliceMaterials.reducer;
+export default sliceSupplier.reducer;

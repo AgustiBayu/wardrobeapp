@@ -9,18 +9,21 @@ import { configureStore } from "@reduxjs/toolkit";
 import productsReducer, { productsFetch } from "./slices/sliceProducts";
 import categoryProductsReducer, { categoryProductsFetch } from "./slices/sliceCategoryProducts";
 import materialsReducer, { materialsFetch } from "./slices/sliceMaterials";
+import supplierReducer, { supplierFetch } from "./slices/sliceSupplier";
 
 const store = configureStore({
   reducer: {
     products: productsReducer,
     categoryProducts: categoryProductsReducer,
     materials: materialsReducer,
+    supplier: supplierReducer,
   },
 });
 
 store.dispatch(productsFetch());
 store.dispatch(categoryProductsFetch());
 store.dispatch(materialsFetch());
+store.dispatch(supplierFetch());
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

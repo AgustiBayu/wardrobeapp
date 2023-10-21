@@ -15,6 +15,8 @@ import DeleteProducts from './components/products/DeleteProducts';
 import Materials from './components/materials/Materials';
 import MaterialsList from './components/materials/MaterialsList';
 import CreateMaterials from './components/materials/CreateMaterials';
+import EditMaterials from './components/materials/EditMaterials';
+import DeleteMaterials from './components/materials/DeleteMaterials';
 
 export default function App() {
   return (
@@ -35,6 +37,8 @@ export default function App() {
             <Route path="/materials" element={<Materials/>}>
               <Route index element={<MaterialsList />} />
               <Route path="create-material" element={<CreateMaterials />} />
+              <Route path="edit-material/:mId" element={<EditMaterials />} />
+              <Route path="delete-material/:mId" element={<DeleteMaterials />} />
             </Route>
           </Routes>
         </div>

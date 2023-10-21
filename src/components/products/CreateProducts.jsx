@@ -1,21 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { productsCreate } from "../../slices/sliceProducts";
+import { productsCreate, productsFetch } from "../../slices/sliceProducts";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { url } from "../../slices/api";
 
 export default function CreateProducts() {
     const dispatch = useDispatch();
     const { createStatus } = useSelector((state) => state.products);
     const { stateCategoryProducts } = useSelector((state) => state.categoryProducts);
+
     const navigate = useNavigate();
 
+    const [picProducts, setPicProducts] = useState(null);
+    const [savePicProducts, setSavePicProducts] = useState(null);
     const [nameProducts, setNameProducts] = useState("");
     const [categoryProducts, setCategoryProducts] = useState(0);
     const [priceProducts, setPriceProducts] = useState(0);
     const [descriptionProducts, setDescriptionProducts] = useState("");
     const [dateProducts, setDateProducts] = useState("");
 
-    const handleCreateProducts = async (e) => {
+    const handleUploadImg = (e) => {
+        const img = e.target.files[0];
+        setPicProducts(URL.createObjectURL(img));
+        setSavePicProducts(img);
+    }
+
+    const handleCreateProducts = (e) => {
         e.preventDefault();
         // console.log(nameProducts);
         // console.log(categoryProducts);
@@ -24,13 +35,19 @@ export default function CreateProducts() {
         // console.log(dateProducts);
         const catP = parseInt(categoryProducts, 10);
         const priceP = parseInt(priceProducts, 10);
-        
+
+        const ip = new FormData();
+        ip.append("image", savePicProducts);
+
+        axios.post(`${url}/imgUp`, ip).then(res => {}).catch(er => console.log(er));
+
         dispatch(productsCreate({
             productName: nameProducts,
             categoryId: catP,
             price: priceP,
             description: descriptionProducts,
             createdAt: dateProducts,
+            imgProd: savePicProducts.name,
         }));
 
         setNameProducts("");
@@ -38,14 +55,29 @@ export default function CreateProducts() {
         setPriceProducts("");
         setDescriptionProducts("");
         setDateProducts("");
-        navigate("/products");
+        // navigate("/products");
     };
+
+
 
     return (
         <div className="grid grid-cols-2">
             <div className="w-[400px]">
                 <h1 className="font-bold text-xl mb-3">Membuat Produk Baru</h1>
                 <form onSubmit={handleCreateProducts}>
+                    <div className="mb-3">
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Gambar Produk :
+                        </label>
+                        <input
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            accept="image/*"
+                            type="file"
+                            id="formFile"
+                            onChange={handleUploadImg}
+                            required
+                        />
+                    </div>
                     <div className="mb-3">
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Nama Produk :
@@ -133,16 +165,16 @@ export default function CreateProducts() {
                 </form>
             </div>
             <div>
-                <div className="w-[400px] h-[400px] bg-gray-400 rounded-lg shadow-md mt-[45px] ml-[30px]">
+                <div className="w-[400px] h-[400px] bg-gray-200 rounded-lg shadow-md mt-[45px] ml-[30px]">
                     <div className="p-4">
                         <div className="flex items-center justify-center h-[368px]">
-                            {/* {productImg ? (
-                                <img src={productImg} alt="Product Preview" className="max-w-full" />
-                            ) : ( */}
-                            <p className="text-gray-100 text-lg">
-                                Gambar akan muncul disini!
-                            </p>
-                            {/* )} */}
+                            {picProducts ? (
+                                <img src={picProducts} alt="Product Preview" className="w-full" />
+                            ) : (
+                                <p className="text-dark text-lg">
+                                    Gambar akan muncul disini!
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>

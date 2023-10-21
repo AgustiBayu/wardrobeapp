@@ -1,40 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { materialsCreate } from "../../slices/sliceMaterials";
-import { useNavigate } from "react-router-dom";
+import { materialsEdit } from "../../slices/sliceMaterials";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function CreateMaterials() {
+export default function EditMaterials() {
     const dispatch = useDispatch();
-    const { createStatus } = useSelector((state) => state.materials);
+    const { createStatus, stateMaterials } = useSelector((state) => state.materials);
     const { stateSupplier } = useSelector((state) => state.supplier);
+    const { mId } = useParams();
+
     const navigate = useNavigate();
 
     const [nameMaterials, setNameMaterials] = useState("");
-    const [supMaterials, setSupMaterials] = useState(0);
+    const [supMaterials, setSupMaterials] = useState([]);
     const [priceMaterials, setPriceMaterials] = useState(0);
     const [qtyMaterials, setQtyMaterials] = useState(0);
+    
 
-    const handleCreateMaterials = async (e) => {
+    useEffect(() => {
+        const selectedMat = stateMaterials.find((item) => item.material_id === parseInt(mId, 10));
+        if (selectedMat) {
+            setNameMaterials(selectedMat.material_name)
+            setSupMaterials(selectedMat.supplier_id);
+            setPriceMaterials(selectedMat.price);
+            setQtyMaterials(selectedMat.quantity_in_stock);
+        }
+    }, [mId, stateMaterials]);
+
+    const handleEditMaterials = async (e) => {
         e.preventDefault();
-        // console.log(nameProducts);
-        // console.log(categoryProducts);
-        // console.log(priceProducts);
-        // console.log(descriptionProducts);
-        // console.log(dateProducts);
         const supM = parseInt(supMaterials, 10);
         const priceM = parseInt(priceMaterials, 10);
-        
-        dispatch(materialsCreate({
-            materialsName: nameMaterials,
-            supId: supM,
-            price: priceM,
-            quantity: qtyMaterials,
-        }));
 
-        setNameMaterials("");
-        setSupMaterials("");
-        setPriceMaterials("");
-        setQtyMaterials("");
+        dispatch(materialsEdit({
+            material: {
+                materialId: parseInt(mId, 10),
+                materialName: nameMaterials,
+                supId: supM,
+                price: priceM,
+                quantity: qtyMaterials,
+            }
+        }));
         navigate("/materials");
     };
 
@@ -42,7 +48,7 @@ export default function CreateMaterials() {
         <div className="grid grid-cols-2">
             <div className="w-[400px]">
                 <h1 className="font-bold text-xl mb-3">Membuat Bahan Baku</h1>
-                <form onSubmit={handleCreateMaterials}>
+                <form onSubmit={handleEditMaterials}>
                     <div className="mb-3">
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Bahan Baku :
@@ -64,7 +70,7 @@ export default function CreateMaterials() {
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             onChange={(e) => setSupMaterials(e.target.value)}
                             required
-                            defaultValue="cat"
+                            defaultValue={supMaterials}
                         >
                             <option value="cat" disabled hidden>
                                 Pilih Supplier

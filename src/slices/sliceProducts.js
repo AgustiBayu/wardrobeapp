@@ -2,9 +2,11 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { setHeaders, url } from './api';
+import { useDispatch } from 'react-redux';
 
 const initialState = {
     stateProducts: [],
+    stateRefreshProd: 0,
     stateSelectedProd: [],
     status: null,
     createStatus: null,
@@ -17,8 +19,7 @@ export const productsFetch = createAsyncThunk(
     "products/productsFetch",
     async () => {
         try {
-            const response = await axios.get(`${url}/products`);
-            console.log(response.data);
+            const response = await axios.get(`${url}/product`);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -52,7 +53,6 @@ export const productsCreate = createAsyncThunk(
 export const productsEdit = createAsyncThunk(
     "products/productsEdit",
     async (values) => {
-        console.log(values);
         try {
             const response = await axios.put(
                 `${url}/product/${values.product.productId}`,
@@ -74,7 +74,6 @@ export const productsEdit = createAsyncThunk(
 export const productsDelete = createAsyncThunk(
     "products/productsDelete",
     async (productId) => {
-        console.log(productId);
         try {
             const response = await axios.delete(
                 `${url}/product/${productId}`,
@@ -96,8 +95,7 @@ export const productsFetchById = createAsyncThunk(
     "products/productsFetchById",
     async (productId) => {
         try {
-            const response = await axios.get(`${url}/products/${productId}`);
-            console.log(response.data);
+            const response = await axios.get(`${url}/product/${productId}`);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -128,6 +126,7 @@ const sliceProducts = createSlice({
         [productsCreate.fulfilled]: (state, action) => {
             state.stateProducts.push(action.payload);
             state.createStatus = "success";
+            state.stateRefreshProd = Math.random();
             toast.success("Produk Telah Dibuat!", {
                 position: "bottom-left"
             });
@@ -145,6 +144,7 @@ const sliceProducts = createSlice({
                 );
                 state.stateProducts = updatedCategory;
                 state.editStatus = "success";
+                state.stateRefreshProd = Math.random();
                 toast.info("Product Telah Diedit!", {
                     position: "bottom-left",
                 });
@@ -167,6 +167,7 @@ const sliceProducts = createSlice({
                 );
                 state.stateProducts = newList;
                 state.deleteStatus = "success";
+                state.stateRefreshProd = Math.random();
                 toast.success("Product Telah Didelete!", {
                     position: "bottom-left",
                 });
