@@ -4,21 +4,20 @@ import { toast } from 'react-toastify';
 import { setHeaders, url } from './api';
 
 const initialState = {
-    stateProducts: [],
-    stateRefreshProd: 0,
-    stateSelectedProd: [],
+    stateBom: [],
+    stateRefreshBom: 0,
     status: null,
     createStatus: null,
     editStatus: null,
     deleteStatus: null,
 };
 
-//fetch products
-export const productsFetch = createAsyncThunk(
-    "products/productsFetch",
+//fetch Bom
+export const bomFetch = createAsyncThunk(
+    "bom/bomFetch",
     async () => {
         try {
-            const response = await axios.get(`${url}/product`);
+            const response = await axios.get(`${url}/materialProduct`);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -27,13 +26,13 @@ export const productsFetch = createAsyncThunk(
     }
 );
 
-//create products
-export const productsCreate = createAsyncThunk(
-    "products/productsCreate",
+//create bom
+export const bomCreate = createAsyncThunk(
+    "bom/bomCreate",
     async (values) => {
         try {
             const response = await axios.post(
-                `${url}/product`,
+                `${url}/materialProduct`,
                 values,
                 setHeaders(),
             );
@@ -48,14 +47,14 @@ export const productsCreate = createAsyncThunk(
     }
 );
 
-//edit products
-export const productsEdit = createAsyncThunk(
-    "products/productsEdit",
+//edit bom
+export const bomEdit = createAsyncThunk(
+    "bom/bomEdit",
     async (values) => {
         try {
             const response = await axios.put(
-                `${url}/product/${values.product.productId}`,
-                values.product,
+                `${url}/materialProduct/${values.bom.matProdId}`,
+                values.bom,
                 setHeaders(),
             );
 
@@ -69,13 +68,13 @@ export const productsEdit = createAsyncThunk(
     }
 );
 
-//delete products
-export const productsDelete = createAsyncThunk(
-    "products/productsDelete",
-    async (productId) => {
+//delete bom
+export const bomDelete = createAsyncThunk(
+    "bom/bomDelete",
+    async (bomId) => {
         try {
             const response = await axios.delete(
-                `${url}/product/${productId}`,
+                `${url}/materialProduct/${bomId}`,
                 setHeaders(),
             );
 
@@ -89,12 +88,12 @@ export const productsDelete = createAsyncThunk(
     }
 );
 
-//fetch products by ID
-export const productsFetchById = createAsyncThunk(
-    "products/productsFetchById",
-    async (productId) => {
+//fetch bom by ID
+export const bomFetchById = createAsyncThunk(
+    "bom/bomFetchById",
+    async (materialId) => {
         try {
-            const response = await axios.get(`${url}/product/${productId}`);
+            const response = await axios.get(`${url}/material/${materialId}`);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -104,92 +103,92 @@ export const productsFetchById = createAsyncThunk(
 );
 
 //redux reducers atau pembuatan state untuk digunakan pada suatu komponen
-const sliceProducts = createSlice({
-    name: "products",
+const sliceBom = createSlice({
+    name: "bom",
     initialState,
     reducers: {},
     extraReducers: {
-        [productsFetch.pending]: (state, action) => {
+        [bomFetch.pending]: (state, action) => {
             state.status = "pending";
         },
-        [productsFetch.fulfilled]: (state, action) => {
-            state.stateProducts = action.payload;
+        [bomFetch.fulfilled]: (state, action) => {
+            state.stateBom = action.payload;
             state.status = "success";
         },
-        [productsFetch.rejected]: (state, action) => {
+        [bomFetch.rejected]: (state, action) => {
             state.status = "rejected";
         },
-        [productsCreate.pending]: (state, action) => {
+        [bomCreate.pending]: (state, action) => {
             state.status = "pending";
         },
-        [productsCreate.fulfilled]: (state, action) => {
-            state.stateProducts.push(action.payload);
+        [bomCreate.fulfilled]: (state, action) => {
+            state.stateBom.push(action.payload);
             state.createStatus = "success";
-            state.stateRefreshProd = Math.random();
+            state.stateRefreshBom = Math.random();
             toast.success("Produk Telah Dibuat!", {
                 position: "bottom-left"
             });
         },
-        [productsCreate.rejected]: (state, action) => {
+        [bomCreate.rejected]: (state, action) => {
             state.status = "rejected";
         },
-        [productsEdit.pending]: (state, action) => {
+        [bomEdit.pending]: (state, action) => {
             state.editStatus = "pending";
         },
-        [productsEdit.fulfilled]: (state, action) => {
+        [bomEdit.fulfilled]: (state, action) => {
             if (action.payload) {
-                const updatedCategory = state.stateProducts.map((product) =>
-                    product.product_id === action.payload.product_id ? action.payload : product
+                const updatedCategory = state.stateBom.map((bom) =>
+                    bom.material_products_id === action.payload.material_products__id ? action.payload : bom
                 );
-                state.stateProducts = updatedCategory;
+                state.stateBom = updatedCategory;
                 state.editStatus = "success";
-                state.stateRefreshProd = Math.random();
-                toast.info("Product Telah Diedit!", {
+                state.stateRefreshBom = Math.random();
+                toast.info("Bahan Baku Telah Diedit!", {
                     position: "bottom-left",
                 });
             } else {
-                toast.error("Product Masih Digunakan!", {
+                toast.error("Bahan Baku Masih Digunakan!", {
                     position: "bottom-left",
                 });
             }
         },
-        [productsEdit.rejected]: (state, action) => {
+        [bomEdit.rejected]: (state, action) => {
             state.editStatus = "rejected";
         },
-        [productsDelete.pending]: (state, action) => {
+        [bomDelete.pending]: (state, action) => {
             state.deleteStatus = "pending";
         },
-        [productsDelete.fulfilled]: (state, action) => {
+        [bomDelete.fulfilled]: (state, action) => {
             if (action.payload) {
-                const newList = state.stateProducts.filter(
-                    (item) => item._id !== action.payload.product_id
+                const newList = state.stateBom.filter(
+                    (item) => item._id !== action.payload.material_products_id
                 );
-                state.stateProducts = newList;
+                state.stateBom = newList;
                 state.deleteStatus = "success";
-                state.stateRefreshProd = Math.random();
-                toast.success("Product Telah Didelete!", {
+                state.stateRefreshBom = Math.random();
+                toast.success("Bahan Baku Telah Didelete!", {
                     position: "bottom-left",
                 });
             } else {
-                toast.error("Product Masih Digunakan!", {
+                toast.error("Bahan Baku Masih Digunakan!", {
                     position: "bottom-left",
                 });
             }
         },
-        [productsDelete.rejected]: (state, action) => {
+        [bomDelete.rejected]: (state, action) => {
             state.deleteStatus = "rejected";
         },
-        [productsFetchById.pending]: (state, action) => {
+        [bomFetchById.pending]: (state, action) => {
             state.status = "pending";
         },
-        [productsFetchById.fulfilled]: (state, action) => {
+        [bomFetchById.fulfilled]: (state, action) => {
             state.stateSelectedProd = action.payload;
             state.status = "success";
         },
-        [productsFetchById.rejected]: (state, action) => {
+        [bomFetchById.rejected]: (state, action) => {
             state.status = "rejected";
         },
     },
 });
 
-export default sliceProducts.reducer;
+export default sliceBom.reducer;

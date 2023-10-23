@@ -17,6 +17,12 @@ import MaterialsList from './components/materials/MaterialsList';
 import CreateMaterials from './components/materials/CreateMaterials';
 import EditMaterials from './components/materials/EditMaterials';
 import DeleteMaterials from './components/materials/DeleteMaterials';
+import BomList from './components/manufacture/billOfMaterials/BomList';
+import Bom from './components/manufacture/billOfMaterials/Bom';
+import CreateBom from './components/manufacture/billOfMaterials/CreateBom';
+import EditBom from './components/manufacture/billOfMaterials/EditBom';
+import DeleteBom from './components/manufacture/billOfMaterials/DeleteBom';
+import PrintReqProd from './components/manufacture/reqProducts/PrintReqProd';
 
 export default function App() {
   return (
@@ -39,6 +45,13 @@ export default function App() {
               <Route path="create-material" element={<CreateMaterials />} />
               <Route path="edit-material/:mId" element={<EditMaterials />} />
               <Route path="delete-material/:mId" element={<DeleteMaterials />} />
+            </Route>
+            <Route path="/bom" element={<Bom/>}>
+              <Route index element={<BomList />} />
+              <Route path="create-bom" element={<CreateBom />} />
+              <Route path="edit-bom/:bomId" element={<EditBom />} />
+              <Route path="delete-bom/:bomId" element={<DeleteBom />} />
+              <Route path="printReqProd" element={<PrintReqProd />} />
             </Route>
           </Routes>
         </div>

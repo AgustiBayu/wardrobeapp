@@ -175,9 +175,7 @@ export default function EditProducts() {
                             {picProducts ? (
                                 <img src={picProducts} alt="Product Preview" className="max-w-full" />
                             ) : (
-                            <p className="text-gray-100 text-lg">
                                 <img src={require(`../../../../API_Wardrobe/uploads/${selectedProd.image}`)} alt="Product Preview" className="max-w-full" />
-                            </p>
                             )}
                         </div>
                     </div>

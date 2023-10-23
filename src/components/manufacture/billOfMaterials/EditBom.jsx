@@ -1,111 +1,131 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { materialsEdit } from "../../slices/sliceMaterials";
+import { bomEdit } from "../../../slices/sliceBom";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function EditMaterials() {
+export default function EditBom() {
     const dispatch = useDispatch();
-    const { createStatus, stateMaterials } = useSelector((state) => state.materials);
-    const { stateSupplier } = useSelector((state) => state.supplier);
-    const { mId } = useParams();
+    const { createStatus } = useSelector((state) => state.bom);
+    const { stateBom } = useSelector((state) => state.bom);
+    const { stateProducts } = useSelector((state) => state.products);
+    const { stateMaterials } = useSelector((state) => state.materials);
+    const { bomId } = useParams();
 
     const navigate = useNavigate();
 
-    const [nameMaterials, setNameMaterials] = useState("");
-    const [supMaterials, setSupMaterials] = useState([]);
-    const [priceMaterials, setPriceMaterials] = useState(0);
-    const [qtyMaterials, setQtyMaterials] = useState(0);
-    const selectedMat = stateMaterials.find((item) => item.material_id === parseInt(mId, 10));
+    const [nameProducts, setNameProducts] = useState(0);
+    const [nameMaterials, setNameMaterials] = useState(0);
+    const [satuan, setSatuan] = useState("");
+    const [jumlah, setJumlah] = useState(0);
+    const selectedBom = stateBom.find((item) => item.material_products_id === parseInt(bomId));
+
+    const [foundProd, setFoundProd] = useState({});
 
     useEffect(() => {
-        // const selectedMat = stateMaterials.find((item) => item.material_id === parseInt(mId, 10));
-        if (selectedMat) {
-            setNameMaterials(selectedMat.material_name)
-            setSupMaterials(selectedMat.supplier_id);
-            setPriceMaterials(selectedMat.price);
-            setQtyMaterials(selectedMat.quantity_in_stock);
+        if (selectedBom) {
+            setNameProducts(selectedBom.product_id);
+            setNameMaterials(selectedBom.material_id);
+            setSatuan(selectedBom.satuan);
+            setJumlah(selectedBom.jumlah);
         }
-    }, [mId, stateMaterials]);
+    }, [bomId, stateBom, selectedBom]);
 
-    const handleEditMaterials = async (e) => {
+    useEffect(() => {
+        setFoundProd(stateProducts.find(foundProd => foundProd.product_id === parseInt(nameProducts)));
+    }, [nameProducts]);
+
+    const handleCreateBom = async (e) => {
         e.preventDefault();
-        const supM = parseInt(supMaterials, 10);
-        const priceM = parseInt(priceMaterials, 10);
 
-        dispatch(materialsEdit({
-            material: {
-                materialId: parseInt(mId, 10),
-                materialName: nameMaterials,
-                supId: supM,
-                price: priceM,
-                quantity: qtyMaterials,
+        const jmlBom = parseInt(jumlah, 10);
+
+        dispatch(bomEdit({
+            bom: {
+                matProdId: parseInt(bomId, 10),
+                productsName: nameProducts,
+                materialsName: nameMaterials,
+                satuan: satuan,
+                jumlah: jmlBom,
             }
         }));
-        navigate("/materials");
+
+        setNameProducts("");
+        setNameMaterials("");
+        setSatuan("");
+        setJumlah("");
+        navigate("/bom");
     };
 
     return (
         <div className="grid grid-cols-2">
             <div className="w-[400px]">
-                <h1 className="font-bold text-xl mb-3">Membuat Bahan Baku</h1>
-                <form onSubmit={handleEditMaterials}>
+                <h1 className="font-bold text-xl mb-3">Membuat Bill of Materials</h1>
+                <form onSubmit={handleCreateBom}>
                     <div className="mb-3">
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Bahan Baku :
-                        </label>
-                        <input
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            type="text"
-                            placeholder="Isi Nama Bahan Baku"
-                            value={nameMaterials}
-                            onChange={(e) => setNameMaterials(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Supplier :
+                            Nama Produk :
                         </label>
                         <select
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            onChange={(e) => setSupMaterials(e.target.value)}
+                            onChange={(e) => setNameProducts(e.target.value)}
                             required
-                            defaultValue={selectedMat.supplier_id}
+                            defaultValue={selectedBom.product_id}
                         >
                             <option value="cat" disabled hidden>
-                                Pilih Supplier
+                                Pilih Produk
                             </option>
-                            {/* memanggil isi dari kategori menggunakan state */}
-                            {stateSupplier.map((item) => (
-                                <option key={item.supplier_id} value={item.supplier_id}>
-                                    {item.supplier_name}
+                            {/* memanggil isi dari produk menggunakan state */}
+                            {stateProducts.map((item) => (
+                                <option key={item.product_id} value={item.product_id}>
+                                    {item.product_name}
                                 </option>
                             ))}
                         </select>
                     </div>
                     <div className="mb-3">
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Harga Bahan Baku :
+                            Bahan Baku :
+                        </label>
+                        <select
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            onChange={(e) => setNameMaterials(e.target.value)}
+                            required
+                            defaultValue={selectedBom.material_id}
+                        >
+                            <option value="cat" disabled hidden>
+                                Pilih Bahan Baku
+                            </option>
+                            {/* memanggil isi dari material menggunakan state */}
+                            {stateMaterials.map((item) => (
+                                <option key={item.material_id} value={item.material_id}>
+                                    {item.material_name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="mb-3">
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Satuan Bahan Baku :
                         </label>
                         <input
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            type="number"
-                            placeholder="Isi Harga Bahan Baku"
-                            value={priceMaterials}
-                            onChange={(e) => setPriceMaterials(e.target.value)}
+                            type="text"
+                            placeholder="Isi Jenis Satuan Bahan Baku"
+                            value={satuan}
+                            onChange={(e) => setSatuan(e.target.value)}
                             required
                         />
                     </div>
                     <div className="mb-3">
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Stok :
+                            Jumlah :
                         </label>
                         <input
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             type="number"
-                            placeholder="Isi Harga Bahan Baku"
-                            value={qtyMaterials}
-                            onChange={(e) => setQtyMaterials(e.target.value)}
+                            placeholder="Isi Jumlah Bahan Baku"
+                            value={jumlah}
+                            onChange={(e) => setJumlah(e.target.value)}
                             required
                         />
                     </div>
@@ -122,16 +142,17 @@ export default function EditMaterials() {
                 </form>
             </div>
             <div>
-                <div className="w-[400px] h-[400px] bg-gray-400 rounded-lg shadow-md mt-[45px] ml-[30px]">
+                <div className="w-[400px] h-[400px] bg-gray-200 rounded-lg shadow-md mt-[45px] ml-[30px]">
                     <div className="p-4">
                         <div className="flex items-center justify-center h-[368px]">
-                            {/* {productImg ? (
-                                <img src={productImg} alt="Product Preview" className="max-w-full" />
-                            ) : ( */}
-                            <p className="text-gray-100 text-lg">
-                                Gambar akan muncul disini!
-                            </p>
-                            {/* )} */}
+                            {(foundProd ? foundProd.image : "") ? (
+                                <img src={require(`../../../../../API_Wardrobe/uploads/${foundProd.image}`)} alt="Product Preview" className="w-full" />
+                            ) : (
+                                <p className="text-dark text-lg">
+                                    Gambar akan muncul disini!
+                                </p>
+                            )}
+
                         </div>
                     </div>
                 </div>
