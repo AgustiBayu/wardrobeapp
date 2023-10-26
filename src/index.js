@@ -4,10 +4,36 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import productsReducer, { productsFetch } from "./slices/sliceProducts";
+import categoryProductsReducer, { categoryProductsFetch } from "./slices/sliceCategoryProducts";
+import materialsReducer, { materialsFetch } from "./slices/sliceMaterials";
+import supplierReducer, { supplierFetch } from "./slices/sliceSupplier";
+import bomReducer, { bomFetch } from "./slices/sliceBom";
+
+const store = configureStore({
+  reducer: {
+    products: productsReducer,
+    categoryProducts: categoryProductsReducer,
+    materials: materialsReducer,
+    supplier: supplierReducer,
+    bom: bomReducer,
+  },
+});
+
+store.dispatch(productsFetch());
+store.dispatch(categoryProductsFetch());
+store.dispatch(materialsFetch());
+store.dispatch(supplierFetch());
+store.dispatch(bomFetch());
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 
