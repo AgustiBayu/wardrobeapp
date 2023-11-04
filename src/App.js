@@ -23,6 +23,9 @@ import CreateBom from './components/manufacture/billOfMaterials/CreateBom';
 import EditBom from './components/manufacture/billOfMaterials/EditBom';
 import DeleteBom from './components/manufacture/billOfMaterials/DeleteBom';
 import PrintReqProd from './components/manufacture/reqProducts/PrintReqProd';
+import SummaryBom from './components/manufacture/billOfMaterials/SummaryBom';
+import Mo from './components/manufacture/manufacturingOrders/Mo';
+import MoList from './components/manufacture/manufacturingOrders/MoList';
 
 export default function App() {
   return (
@@ -52,6 +55,13 @@ export default function App() {
               <Route path="edit-bom/:bomId" element={<EditBom />} />
               <Route path="delete-bom/:bomId" element={<DeleteBom />} />
               <Route path="printReqProd" element={<PrintReqProd />} />
+              <Route path="summaryBom" element={<SummaryBom />} />
+            </Route>
+            <Route path="/mo" element={<Mo/>}>
+              <Route index element={<MoList />} />
+              <Route path="create-mo" element={<CreateBom />} />
+              <Route path="edit-mo/:moId" element={<EditBom />} />
+              <Route path="delete-mo/:moId" element={<DeleteBom />} />
             </Route>
           </Routes>
         </div>

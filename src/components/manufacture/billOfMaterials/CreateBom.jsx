@@ -18,7 +18,7 @@ export default function CreateBom() {
     const [foundProd, setFoundProd] = useState({});
 
     useEffect(() => {
-        setFoundProd(stateProducts.find(foundProd => foundProd.product_id === parseInt(nameProducts)));
+        setFoundProd(stateProducts && stateProducts.find(foundProd => foundProd.product_id === parseInt(nameProducts)));
     }, [nameProducts]);
 
     const handleCreateBom = async (e) => {
@@ -27,8 +27,8 @@ export default function CreateBom() {
         const jmlBom = parseInt(jumlah, 10);
 
         dispatch(bomCreate({
-            productsName: nameProducts,
-            materialsName: nameMaterials,
+            productId: parseInt(nameProducts),
+            materialId: parseInt(nameMaterials),
             satuan: satuan,
             jumlah: jmlBom,
         }));
@@ -59,7 +59,7 @@ export default function CreateBom() {
                                 Pilih Produk
                             </option>
                             {/* memanggil isi dari produk menggunakan state */}
-                            {stateProducts.map((item) => (
+                            {stateProducts && stateProducts.map((item) => (
                                 <option key={item.product_id} value={item.product_id}>
                                     {item.product_name}
                                 </option>
@@ -80,7 +80,7 @@ export default function CreateBom() {
                                 Pilih Bahan Baku
                             </option>
                             {/* memanggil isi dari material menggunakan state */}
-                            {stateMaterials.map((item) => (
+                            {stateMaterials && stateMaterials.map((item) => (
                                 <option key={item.material_id} value={item.material_id}>
                                     {item.material_name}
                                 </option>

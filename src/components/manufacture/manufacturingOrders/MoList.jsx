@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { bomFetch } from "../../../slices/sliceBom";
 
-export default function BomList() {
+export default function MoList() {
     const dispatch = useDispatch();
     const { stateBom, stateRefreshBom } = useSelector((state) => state.bom); //deklarasi state yang diambil dari sliceMaterials.js
     const navigate = useNavigate();

@@ -5,6 +5,7 @@ import { setHeaders, url } from './api';
 
 const initialState = {
     stateBom: [],
+    stateSummaryBom: [],
     stateRefreshBom: 0,
     status: null,
     createStatus: null,
@@ -102,6 +103,20 @@ export const bomFetchById = createAsyncThunk(
     }
 );
 
+//fetch Summary Bom
+export const summaryBomFetch = createAsyncThunk(
+    "summaryBom/summaryBomFetch",
+    async () => {
+        try {
+            const response = await axios.get(`${url}/materialProductBOM`);
+            return response.data;
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+);
+
 //redux reducers atau pembuatan state untuk digunakan pada suatu komponen
 const sliceBom = createSlice({
     name: "bom",
@@ -186,6 +201,16 @@ const sliceBom = createSlice({
             state.status = "success";
         },
         [bomFetchById.rejected]: (state, action) => {
+            state.status = "rejected";
+        },
+        [summaryBomFetch.pending]: (state, action) => {
+            state.status = "pending";
+        },
+        [summaryBomFetch.fulfilled]: (state, action) => {
+            state.stateSummaryBom = action.payload;
+            state.status = "success";
+        },
+        [summaryBomFetch.rejected]: (state, action) => {
             state.status = "rejected";
         },
     },

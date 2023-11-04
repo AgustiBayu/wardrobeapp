@@ -105,7 +105,7 @@ export default function CreateProducts() {
                                 Pilih Kategori
                             </option>
                             {/* memanggil isi dari kategori menggunakan state */}
-                            {stateCategoryProducts.map((item) => (
+                            {stateCategoryProducts && stateCategoryProducts.map((item) => (
                                 <option key={item.category_id} value={item.category_id}>
                                     {item.category_name}
                                 </option>

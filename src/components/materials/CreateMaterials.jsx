@@ -70,7 +70,7 @@ export default function CreateMaterials() {
                                 Pilih Supplier
                             </option>
                             {/* memanggil isi dari kategori menggunakan state */}
-                            {stateSupplier.map((item) => (
+                            {stateSupplier && stateSupplier.map((item) => (
                                 <option key={item.supplier_id} value={item.supplier_id}>
                                     {item.supplier_name}
                                 </option>

@@ -33,7 +33,8 @@ export default function ProductsList() {
             };
         });
     // new Date(new Date(item.created_at).getTime() + 7 * 60 * 60 * 1000).toISOString().split('T')[0]
-    const validRows = rows ? rows.filter((row) => row.id !== undefined && row.id !== null) : "";
+    const validRows = rows ? rows.filter((row) => row.id !== undefined && row.id !== null) : [];
+    console.log(validRows);
 
     //memasukkan data kedalam kolom tampilan tabel
     const columns = [
