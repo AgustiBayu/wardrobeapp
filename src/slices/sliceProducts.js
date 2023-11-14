@@ -167,7 +167,7 @@ const sliceProducts = createSlice({
                 state.stateProducts = newList;
                 state.deleteStatus = "success";
                 state.stateRefreshProd = Math.random();
-                toast.success("Product Telah Didelete!", {
+                toast.success("Product Telah Dihapus!", {
                     position: "bottom-left",
                 });
             } else {

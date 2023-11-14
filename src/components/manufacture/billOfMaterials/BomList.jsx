@@ -13,7 +13,7 @@ export default function BomList() {
         dispatch(bomFetch());
     }, [stateRefreshBom]);
 
-    // mengeluarkan isi data dari dalam state material
+    // mengeluarkan isi data dari dalam state BoM
     const rows =
         stateBom &&
         stateBom.map((item) => {
@@ -65,7 +65,7 @@ export default function BomList() {
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-[10px]" onClick={() => navigate("create-bom")}>
                 Create
             </button>
-            <button className="bg-yellow-500 hover:bg-yellow-600 text-dark font-bold py-2 px-4 rounded my-[10px] ml-[10px]" onClick={() => navigate("PrintReqProd")}>
+            <button className="bg-yellow-500 hover:bg-yellow-600 text-dark font-bold py-2 px-4 rounded my-[10px] ml-[10px]" onClick={() => navigate("/bom/summaryBom")}>
                 Summary
             </button>
             <DataGrid

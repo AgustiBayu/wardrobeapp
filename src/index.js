@@ -11,6 +11,7 @@ import categoryProductsReducer, { categoryProductsFetch } from "./slices/sliceCa
 import materialsReducer, { materialsFetch } from "./slices/sliceMaterials";
 import supplierReducer, { supplierFetch } from "./slices/sliceSupplier";
 import bomReducer, { bomFetch, summaryBomFetch } from "./slices/sliceBom";
+import moReducer, { moFetch } from "./slices/sliceMo";
 
 const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
     materials: materialsReducer,
     supplier: supplierReducer,
     bom: bomReducer,
+    mo: moReducer,
   },
 });
 
@@ -28,6 +30,7 @@ store.dispatch(materialsFetch());
 store.dispatch(supplierFetch());
 store.dispatch(bomFetch());
 store.dispatch(summaryBomFetch());
+store.dispatch(moFetch());
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

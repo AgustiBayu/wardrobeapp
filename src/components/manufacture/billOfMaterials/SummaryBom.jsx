@@ -1,28 +1,47 @@
 import { DataGrid } from "@mui/x-data-grid";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { summaryBomFetch } from "../../../slices/sliceBom";
 
 export default function SummaryBom() {
-    const dispatch = useDispatch();
-    const { stateSummaryBom, stateRefreshBom } = useSelector((state) => state.bom); //deklarasi state yang diambil dari sliceMaterials.js
+    const { stateBom } = useSelector((state) => state.bom); //deklarasi state yang diambil dari sliceMaterials.js
     const navigate = useNavigate();
-    console.log(stateSummaryBom);
+    console.log(stateBom);
+
+    const mergedData = stateBom.reduce((result, item) => {
+        const existingItem = result.find((x) => x.product_id === item.product_id);
+        if (existingItem) {
+          existingItem.material_name += `, ${item.material_name}`;
+          existingItem.jumlah += `, ${item.jumlah}`;
+          existingItem.satuan += `, ${item.satuan}`;
+          existingItem.price += `, ${item.price}`;
+          existingItem.total += item.jumlah * item.price;
+        } else {
+          result.push({
+            product_id: item.product_id,
+            product_name: item.product_name,
+            material_name: item.material_name,
+            jumlah: item.jumlah,
+            satuan: item.satuan,
+            price: item.price,
+            total: item.jumlah * item.price,
+          });
+        }
+        return result;
+      }, []);
 
     // useEffect(() => {
-    //     dispatch(summaryBomFetch());
+    //     dispatch(bomFetch());
     // }, [stateRefreshBom]);
 
     // mengeluarkan isi data dari dalam state material
-    const rows = stateSummaryBom && stateSummaryBom.map((item) => ({
-        id: item.material_products_id,
+    const rows = mergedData.map((item) => ({
+        id: item.product_id,
         bomNameProd: item.product_name,
         bomNameMat: item.material_name,
-        bomPriceProd: item.cost_product,
-        bomQty: item.quantity_in_stock,
-        bomPriceMat: item.cost_material,
-        bomTotal: item.total_const_bom,
+        bomJumlah: item.jumlah,
+        bomSatuan: item.satuan,
+        bomPrice: item.price,
+        bomTotal: item.total,
       }));
     // new Date(new Date(item.created_at).getTime() + 7 * 60 * 60 * 1000).toISOString().split('T')[0]
 
@@ -32,10 +51,10 @@ export default function SummaryBom() {
     const columns = [
         { field: "id", headerName: "ID", width: 50 },
         { field: "bomNameProd", headerName: "Nama Produk", width: 130 },
-        { field: "bomNameMat", headerName: "Nama Bahan Baku", width: 130 },
-        { field: "bomPriceProd", headerName: "Harga Product", width: 130 },
-        { field: "bomQty", headerName: "stock", width: 130 },
-        { field: "bomPriceMat", headerName: "Harga Bahan Baku", width: 150 },
+        { field: "bomNameMat", headerName: "Nama Bahan Baku", width: 150 },
+        { field: "bomJumlah", headerName: "Jumlah", width: 100 },
+        { field: "bomSatuan", headerName: "Satuan", width: 150 },
+        { field: "bomPrice", headerName: "Harga Per Unit", width: 150 },
         { field: "bomTotal", headerName: "Total", width: 80 },
         {
             field: "actions",
@@ -45,7 +64,7 @@ export default function SummaryBom() {
                 const bomId = params.row.id;
                 return (
                     <div>
-                        <button onClick="" className="bg-yellow-500 hover:bg-yellow-600 text-dark font-bold py-2 px-4 rounded mr-[15px]">
+                        <button onClick={() => navigate("/mo/create-mo")} className="bg-yellow-500 hover:bg-yellow-600 text-dark font-bold py-2 px-4 rounded mr-[15px]">
                             Order Produk
                         </button>
                     </div>

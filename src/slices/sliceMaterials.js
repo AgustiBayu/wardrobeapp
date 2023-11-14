@@ -167,7 +167,7 @@ const sliceMaterials = createSlice({
                 state.stateMaterials = newList;
                 state.deleteStatus = "success";
                 state.stateRefreshMat = Math.random();
-                toast.success("Bahan Baku Telah Didelete!", {
+                toast.success("Bahan Baku Telah Dihapus!", {
                     position: "bottom-left",
                 });
             } else {

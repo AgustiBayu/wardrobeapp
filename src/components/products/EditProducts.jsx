@@ -58,6 +58,7 @@ export default function EditProducts() {
                 price: priceP,
                 description: descriptionProducts,
                 createdAt: dateProducts,
+                prodStock: selectedProd.product_stock,
                 imgProd: savePicProducts.name,
             }
         }));

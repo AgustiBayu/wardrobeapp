@@ -4,26 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { moFetch } from "../../../slices/sliceMo";
 
-export default function MoList() {
+export default function MarkAsTodo() {
     const dispatch = useDispatch();
     const { stateMo, stateRefreshMo } = useSelector((state) => state.mo); //deklarasi state yang diambil dari sliceMo.js
     const navigate = useNavigate();
 
     console.log(stateMo);
-
-    function formatDate(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-    
-        if (month.length < 2) 
-            month = '0' + month;
-        if (day.length < 2) 
-            day = '0' + day;
-    
-        return [year, month, day].join('-');
-    }
 
     useEffect(() => {
         dispatch(moFetch());
@@ -33,12 +19,13 @@ export default function MoList() {
     const rows =
         stateMo &&
         stateMo.map((item) => {
+
             return {
                 id: item.orderMO_id,
                 moNameProd: item.product_name,
                 moQty: item.quantity,
                 moTotal: item.total,
-                moDate: formatDate(item.tanggal),
+                moDate: item.tanggal,
                 moStatus: item.status,
             };
         });
@@ -62,22 +49,17 @@ export default function MoList() {
                 const moId = params.row.id;
                 const filteredMo = stateMo.filter((moItem) => moItem.orderMO_id === moId);
                 const statusMo = filteredMo.find((moStatus) => moStatus.status);
-                
+
                 return (
                     <div>
                         {statusMo && statusMo.status === "Pending" ? (
-                            <div>
-                                <button onClick={() => navigate(`edit-mo/${moId}`)} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-[15px]">
-                                    Edit
-                                </button>
-                                <button onClick={() => navigate(`delete-mo/${moId}`)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                    Delete
-                                </button>
-                            </div>
+                            <button onClick={() => navigate(`/mo/mark-as-todo-edit/${moId}`)} className="bg-yellow-500 hover:bg-yellow-700 text-dark font-bold py-2 px-4 rounded mr-[15px]">
+                                Confirm Order
+                            </button>
                         ) : statusMo && statusMo.status === "Confirmed" ? (
                             <span className="text-yellow-600 font-bold">Order Confirmed</span>
                         ) : statusMo && statusMo.status === "Available" ? (
-                            <span className="text-blue-600 font-bold">Confirmed, Starting Manufacture</span>
+                            <span className="text-blue-600 font-bold">Starting Manufacture</span>
                         ) : statusMo && statusMo.status === "Unavailable" ? (
                             <span className="text-red-600 font-bold">Insufficient Materials</span>
                         ) : statusMo && statusMo.status === "Finished" ? (
@@ -85,7 +67,6 @@ export default function MoList() {
                         ) : (
                             <span className="font-bold">Disabled</span>
                         )}
-
                     </div>
                 );
             },
@@ -94,10 +75,10 @@ export default function MoList() {
 
     return (
         <div style={{ height: 400, width: "100%" }}>
-            <h1 className="font-bold text-xl">Manufacturing Orders</h1>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-[10px]" onClick={() => navigate("create-mo")}>
+            <h1 className="font-bold text-xl mb-[20px]">Mark As Todo</h1>
+            {/* <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-[10px]" onClick={() => navigate("create-mo")}>
                 Create
-            </button>
+            </button> */}
             <DataGrid
                 rows={validRows}
                 columns={columns}

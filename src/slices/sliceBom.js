@@ -140,7 +140,7 @@ const sliceBom = createSlice({
             state.stateBom.push(action.payload);
             state.createStatus = "success";
             state.stateRefreshBom = Math.random();
-            toast.success("Produk Telah Dibuat!", {
+            toast.success("BoM Telah Dibuat!", {
                 position: "bottom-left"
             });
         },
@@ -158,11 +158,11 @@ const sliceBom = createSlice({
                 state.stateBom = updatedCategory;
                 state.editStatus = "success";
                 state.stateRefreshBom = Math.random();
-                toast.info("Bahan Baku Telah Diedit!", {
+                toast.info("BoM Telah Diedit!", {
                     position: "bottom-left",
                 });
             } else {
-                toast.error("Bahan Baku Masih Digunakan!", {
+                toast.error("BoM Masih Digunakan!", {
                     position: "bottom-left",
                 });
             }
@@ -181,11 +181,11 @@ const sliceBom = createSlice({
                 state.stateBom = newList;
                 state.deleteStatus = "success";
                 state.stateRefreshBom = Math.random();
-                toast.success("Bahan Baku Telah Didelete!", {
+                toast.success("BoM Telah Dihapus!", {
                     position: "bottom-left",
                 });
             } else {
-                toast.error("Bahan Baku Masih Digunakan!", {
+                toast.error("BoM Masih Digunakan!", {
                     position: "bottom-left",
                 });
             }

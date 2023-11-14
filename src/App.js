@@ -26,6 +26,16 @@ import PrintReqProd from './components/manufacture/reqProducts/PrintReqProd';
 import SummaryBom from './components/manufacture/billOfMaterials/SummaryBom';
 import Mo from './components/manufacture/manufacturingOrders/Mo';
 import MoList from './components/manufacture/manufacturingOrders/MoList';
+import CreateMo from './components/manufacture/manufacturingOrders/CreateMo';
+import MarkAsTodo from './components/manufacture/manufacturingOrders/MarkAsTodo';
+import EditMarkAsTodo from './components/manufacture/manufacturingOrders/EditMarkAsTodo';
+import CheckAvailability from './components/manufacture/manufacturingOrders/CheckAvailability';
+import EditCheckAvailability from './components/manufacture/manufacturingOrders/EditCheckAvailability';
+import MarkAsDone from './components/manufacture/manufacturingOrders/MarkAsDone';
+import EditMarkAsDone from './components/manufacture/manufacturingOrders/EditMarkAsDone';
+import EditMo from './components/manufacture/manufacturingOrders/EditMo';
+import DeleteMo from './components/manufacture/manufacturingOrders/DeleteMo';
+import DetailAvailability from './components/manufacture/manufacturingOrders/DetailAvailability';
 
 export default function App() {
   return (
@@ -59,9 +69,16 @@ export default function App() {
             </Route>
             <Route path="/mo" element={<Mo/>}>
               <Route index element={<MoList />} />
-              <Route path="create-mo" element={<CreateBom />} />
-              <Route path="edit-mo/:moId" element={<EditBom />} />
-              <Route path="delete-mo/:moId" element={<DeleteBom />} />
+              <Route path="create-mo" element={<CreateMo />} />
+              <Route path="mark-as-todo" element={<MarkAsTodo />} />
+              <Route path="mark-as-todo-edit/:moId" element={<EditMarkAsTodo />} />
+              <Route path="check-availability" element={<CheckAvailability />} />
+              <Route path="detail-availability/:moId" element={<DetailAvailability />} />
+              <Route path="check-availability-edit/:moId" element={<EditCheckAvailability />} />
+              <Route path="mark-as-done" element={<MarkAsDone />} />
+              <Route path="mark-as-done-edit/:moId" element={<EditMarkAsDone />} />
+              <Route path="edit-mo/:moId" element={<EditMo />} />
+              <Route path="delete-mo/:moId" element={<DeleteMo />} />
             </Route>
           </Routes>
         </div>

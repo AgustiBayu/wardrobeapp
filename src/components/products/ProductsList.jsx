@@ -28,7 +28,7 @@ export default function ProductsList() {
                 pCat: item.category_name,
                 pPrice: item.price,
                 pDesc: item.description,
-                pCreated: item.created_at,
+                pStock: item.product_stock,
                 pPic: item.image ? require(`../../../../API_Wardrobe/uploads/${item.image}`) : null,
             };
         });
@@ -38,13 +38,13 @@ export default function ProductsList() {
 
     //memasukkan data kedalam kolom tampilan tabel
     const columns = [
-        { field: "id", headerName: "ID", width: 80 },
-        { field: "pPic", headerName: "Gambar", width: 150, renderCell: (img) => <img className="w-[70px]" src={img.value} /> },
-        { field: "pName", headerName: "Nama", width: 130 },
-        { field: "pCat", headerName: "Kategori", width: 130 },
-        { field: "pPrice", headerName: "Harga", width: 130 },
+        { field: "id", headerName: "ID", width: 50 },
+        { field: "pPic", headerName: "Gambar", width: 100, renderCell: (img) => <img className="w-[70px]" src={img.value} /> },
+        { field: "pName", headerName: "Nama", width: 80 },
+        { field: "pCat", headerName: "Kategori", width: 80 },
+        { field: "pPrice", headerName: "Harga", width: 80 },
+        { field: "pStock", headerName: "stok", width: 80 },
         { field: "pDesc", headerName: "Deskripsi", width: 150 },
-        { field: "pCreated", headerName: "Tanggal Dibuat", width: 130 },
         {
             field: "actions",
             headerName: "Actions",
