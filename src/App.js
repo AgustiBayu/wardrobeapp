@@ -36,6 +36,16 @@ import EditMarkAsDone from './components/manufacture/manufacturingOrders/EditMar
 import EditMo from './components/manufacture/manufacturingOrders/EditMo';
 import DeleteMo from './components/manufacture/manufacturingOrders/DeleteMo';
 import DetailAvailability from './components/manufacture/manufacturingOrders/DetailAvailability';
+import Po from './components/purchase/purchaseOrder/Po';
+import Supplier from './components/purchase/supplier/Supplier';
+import SupplierList from './components/purchase/supplier/SupplierList';
+import CreateSupplier from './components/purchase/supplier/CreateSupplier';
+import EditSupplier from './components/purchase/supplier/EditSupplier';
+import DeleteSupplier from './components/purchase/supplier/DeleteSupplier';
+import PoList from './components/purchase/purchaseOrder/PoList';
+import CreatePo from './components/purchase/purchaseOrder/CreatePo';
+import EditPo from './components/purchase/purchaseOrder/EditPo';
+import DeletePo from './components/purchase/purchaseOrder/DeletePo';
 
 export default function App() {
   return (
@@ -70,15 +80,27 @@ export default function App() {
             <Route path="/mo" element={<Mo/>}>
               <Route index element={<MoList />} />
               <Route path="create-mo" element={<CreateMo />} />
+              <Route path="edit-mo/:moId" element={<EditMo />} />
+              <Route path="delete-mo/:moId" element={<DeleteMo />} />
               <Route path="mark-as-todo" element={<MarkAsTodo />} />
               <Route path="mark-as-todo-edit/:moId" element={<EditMarkAsTodo />} />
               <Route path="check-availability" element={<CheckAvailability />} />
               <Route path="detail-availability/:moId" element={<DetailAvailability />} />
               <Route path="check-availability-edit/:moId" element={<EditCheckAvailability />} />
               <Route path="mark-as-done" element={<MarkAsDone />} />
-              <Route path="mark-as-done-edit/:moId" element={<EditMarkAsDone />} />
-              <Route path="edit-mo/:moId" element={<EditMo />} />
-              <Route path="delete-mo/:moId" element={<DeleteMo />} />
+              <Route path="mark-as-done-edit/:moId" element={<EditMarkAsDone />} />   
+            </Route>
+            <Route path="/po" element={<Po/>}>
+              <Route index element={<PoList />} />
+              <Route path="create-po" element={<CreatePo />} />
+              <Route path="edit-po/:poId" element={<EditPo />} />
+              <Route path="delete-po/:poId" element={<DeletePo />} />
+            </Route>
+            <Route path="/supplier" element={<Supplier/>}>
+              <Route index element={<SupplierList />} />
+              <Route path="create-supplier" element={<CreateSupplier />} />
+              <Route path="edit-supplier/:supId" element={<EditSupplier />} />
+              <Route path="delete-supplier/:supId" element={<DeleteSupplier />} />
             </Route>
           </Routes>
         </div>

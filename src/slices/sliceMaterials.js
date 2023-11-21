@@ -162,7 +162,7 @@ const sliceMaterials = createSlice({
         [materialsDelete.fulfilled]: (state, action) => {
             if (action.payload) {
                 const newList = state.stateMaterials.filter(
-                    (item) => item._id !== action.payload.materials_id
+                    (item) => item.material_id !== action.payload.material_id
                 );
                 state.stateMaterials = newList;
                 state.deleteStatus = "success";

@@ -147,7 +147,7 @@ const sliceMo = createSlice({
         [moDelete.fulfilled]: (state, action) => {
             if (action.payload) {
                 const newList = state.stateMo.filter(
-                    (item) => item._id !== action.payload.material_products_id
+                    (item) => item.orderMO_id !== action.payload.orderMO_id
                 );
                 state.stateMo = newList;
                 state.deleteStatus = "success";

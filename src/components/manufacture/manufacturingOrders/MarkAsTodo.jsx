@@ -11,6 +11,20 @@ export default function MarkAsTodo() {
 
     console.log(stateMo);
 
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        return [year, month, day].join('-');
+    }
+
     useEffect(() => {
         dispatch(moFetch());
     }, [stateRefreshMo]);
@@ -25,7 +39,7 @@ export default function MarkAsTodo() {
                 moNameProd: item.product_name,
                 moQty: item.quantity,
                 moTotal: item.total,
-                moDate: item.tanggal,
+                moDate: formatDate(item.tanggal),
                 moStatus: item.status,
             };
         });

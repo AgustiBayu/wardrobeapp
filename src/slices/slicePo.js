@@ -4,20 +4,20 @@ import { toast } from 'react-toastify';
 import { setHeaders, url } from './api';
 
 const initialState = {
-    stateSupplier: [],
-    stateRefreshSup: 0,
+    statePo: [],
+    stateRefreshPo: 0,
     status: null,
     createStatus: null,
     editStatus: null,
     deleteStatus: null,
 };
 
-//fetch supplier
-export const supplierFetch = createAsyncThunk(
-    "supplier/supplierFetch",
+//fetch po
+export const poFetch = createAsyncThunk(
+    "po/poFetch",
     async () => {
         try {
-            const response = await axios.get(`${url}/supplier`);
+            const response = await axios.get(`${url}/purchaseOrder`);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -26,13 +26,13 @@ export const supplierFetch = createAsyncThunk(
     }
 );
 
-//create supplier
-export const supplierCreate = createAsyncThunk(
-    "supplier/supplierCreate",
+//create po
+export const poCreate = createAsyncThunk(
+    "po/poCreate",
     async (values) => {
         try {
             const response = await axios.post(
-                `${url}/supplier`,
+                `${url}/purchaseOrder`,
                 values,
                 setHeaders(),
             );
@@ -47,15 +47,15 @@ export const supplierCreate = createAsyncThunk(
     }
 );
 
-//edit supplier
-export const supplierEdit = createAsyncThunk(
-    "supplier/supplierEdit",
+//edit po
+export const poEdit = createAsyncThunk(
+    "po/poEdit",
     async (values) => {
         console.log(values);
         try {
             const response = await axios.put(
-                `${url}/supplier/${values.supplier.supplierId}`,
-                values.supplier,
+                `${url}/purchaseOrder/${values.po.poId}`,
+                values.po,
                 setHeaders(),
             );
 
@@ -69,14 +69,14 @@ export const supplierEdit = createAsyncThunk(
     }
 );
 
-//delete supplier
-export const supplierDelete = createAsyncThunk(
-    "supplier/supplierDelete",
-    async (supplierId) => {
-        console.log(supplierId);
+//delete po
+export const poDelete = createAsyncThunk(
+    "po/poDelete",
+    async (poId) => {
+        console.log(poId);
         try {
             const response = await axios.delete(
-                `${url}/supplier/${supplierId}`,
+                `${url}/purchaseOrder/${poId}`,
                 setHeaders(),
             );
 
@@ -90,12 +90,12 @@ export const supplierDelete = createAsyncThunk(
     }
 );
 
-//fetch supplier by ID
-export const supplierFetchById = createAsyncThunk(
-    "supplier/supplierFetchById",
-    async (supplierId) => {
+//fetch po by ID
+export const poFetchById = createAsyncThunk(
+    "po/poFetchById",
+    async (poId) => {
         try {
-            const response = await axios.get(`${url}/supplier/${supplierId}`);
+            const response = await axios.get(`${url}/purchaseOrder/${poId}`);
             console.log(response.data);
             return response.data;
         } catch (error) {
@@ -106,92 +106,92 @@ export const supplierFetchById = createAsyncThunk(
 );
 
 //redux reducers atau pembuatan state untuk digunakan pada suatu komponen
-const sliceSupplier = createSlice({
-    name: "supplier",
+const slicePo = createSlice({
+    name: "po",
     initialState,
     reducers: {},
     extraReducers: {
-        [supplierFetch.pending]: (state, action) => {
+        [poFetch.pending]: (state, action) => {
             state.status = "pending";
         },
-        [supplierFetch.fulfilled]: (state, action) => {
-            state.stateSupplier = action.payload;
+        [poFetch.fulfilled]: (state, action) => {
+            state.statePo = action.payload;
             state.status = "success";
         },
-        [supplierFetch.rejected]: (state, action) => {
+        [poFetch.rejected]: (state, action) => {
             state.status = "rejected";
         },
-        [supplierCreate.pending]: (state, action) => {
+        [poCreate.pending]: (state, action) => {
             state.status = "pending";
         },
-        [supplierCreate.fulfilled]: (state, action) => {
-            state.stateSupplier.push(action.payload);
+        [poCreate.fulfilled]: (state, action) => {
+            state.statePo.push(action.payload);
             state.createStatus = "success";
-            state.stateRefreshSup = Math.random();
-            toast.success("Supplier Telah Dibuat!", {
+            state.stateRefreshPo = Math.random();
+            toast.success("PO Telah Dibuat!", {
                 position: "bottom-left"
             });
         },
-        [supplierCreate.rejected]: (state, action) => {
+        [poCreate.rejected]: (state, action) => {
             state.status = "rejected";
         },
-        [supplierEdit.pending]: (state, action) => {
+        [poEdit.pending]: (state, action) => {
             state.editStatus = "pending";
         },
-        [supplierEdit.fulfilled]: (state, action) => {
+        [poEdit.fulfilled]: (state, action) => {
             if (action.payload) {
-                const updatedCategory = state.stateSupplier.map((supplier) =>
-                    supplier.supplier_id === action.payload.supplier_id ? action.payload : supplier
+                const updatedCategory = state.statePo.map((po) =>
+                    po.orderPO_id === action.payload.orderPO_id ? action.payload : po
                 );
-                state.stateSupplier = updatedCategory;
+                state.statePo = updatedCategory;
                 state.editStatus = "success";
-                state.stateRefreshSup = Math.random();
-                toast.info("Supplier Telah Diedit!", {
+                state.stateRefreshPo = Math.random();
+                toast.info("PO Telah Diedit!", {
                     position: "bottom-left",
                 });
             } else {
-                toast.error("Supplier Masih Digunakan!", {
+                toast.error("PO Masih Digunakan!", {
                     position: "bottom-left",
                 });
             }
         },
-        [supplierEdit.rejected]: (state, action) => {
+        [poEdit.rejected]: (state, action) => {
             state.editStatus = "rejected";
         },
-        [supplierDelete.pending]: (state, action) => {
+        [poDelete.pending]: (state, action) => {
             state.deleteStatus = "pending";
         },
-        [supplierDelete.fulfilled]: (state, action) => {
+        [poDelete.fulfilled]: (state, action) => {
             if (action.payload) {
-                const newList = state.stateSupplier.filter(
-                    (item) => item._id !== action.payload.supplier_id
+                const newList = state.statePo.filter(
+                    (item) => item.orderPO_id !== action.payload.orderPO_id
                 );
-                state.stateSupplier = newList;
+                state.statePo = newList;
                 state.deleteStatus = "success";
-                state.stateRefreshSup = Math.random();
-                toast.success("Supplier Telah Didelete!", {
+                state.stateRefreshPo = Math.random();
+                toast.success("PO Telah Didelete!", {
                     position: "bottom-left",
                 });
             } else {
-                toast.error("Supplier Masih Digunakan!", {
+                toast.error("PO Masih Digunakan!", {
                     position: "bottom-left",
                 });
             }
         },
-        [supplierDelete.rejected]: (state, action) => {
+        [poDelete.rejected]: (state, action) => {
             state.deleteStatus = "rejected";
         },
-        [supplierFetchById.pending]: (state, action) => {
+        [poFetchById.pending]: (state, action) => {
             state.status = "pending";
         },
-        [supplierFetchById.fulfilled]: (state, action) => {
+        [poFetchById.fulfilled]: (state, action) => {
             state.stateSelectedProd = action.payload;
             state.status = "success";
         },
-        [supplierFetchById.rejected]: (state, action) => {
+        [poFetchById.rejected]: (state, action) => {
             state.status = "rejected";
         },
     },
 });
 
-export default sliceSupplier.reducer;
+export default slicePo.reducer;

@@ -162,7 +162,7 @@ const sliceProducts = createSlice({
         [productsDelete.fulfilled]: (state, action) => {
             if (action.payload) {
                 const newList = state.stateProducts.filter(
-                    (item) => item._id !== action.payload.product_id
+                    (item) => item.product_id !== action.payload.product_id
                 );
                 state.stateProducts = newList;
                 state.deleteStatus = "success";

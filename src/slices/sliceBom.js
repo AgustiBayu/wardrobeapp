@@ -176,7 +176,7 @@ const sliceBom = createSlice({
         [bomDelete.fulfilled]: (state, action) => {
             if (action.payload) {
                 const newList = state.stateBom.filter(
-                    (item) => item._id !== action.payload.material_products_id
+                    (item) => item.material_products_id !== action.payload.material_products_id
                 );
                 state.stateBom = newList;
                 state.deleteStatus = "success";
