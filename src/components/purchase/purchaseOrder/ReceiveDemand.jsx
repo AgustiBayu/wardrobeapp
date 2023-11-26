@@ -3,10 +3,13 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { poFetch } from "../../../slices/slicePo";
+import { payPoFetch } from "../../../slices/slicePaymentPo";
 
-export default function PoList() {
+export default function ReceiveDemand() {
     const dispatch = useDispatch();
-    const { statePo, stateRefreshPo } = useSelector((state) => state.po); //deklarasi state yang diambil dari slicePo.js
+    const { statePo, stateRefreshPo } = useSelector((state) => state.po);
+    const { stateRefreshPayPo } = useSelector((state) => state.payPo);
+    const { statePayPo } = useSelector((state) => state.payPo);
     const navigate = useNavigate();
 
     console.log(statePo);
@@ -28,6 +31,10 @@ export default function PoList() {
     useEffect(() => {
         dispatch(poFetch());
     }, [stateRefreshPo]);
+
+    useEffect(() => {
+        dispatch(payPoFetch());
+    }, [stateRefreshPayPo]);
 
     // mengeluarkan isi data dari dalam state po
     const rows =
@@ -69,23 +76,42 @@ export default function PoList() {
                 const poId = params.row.id;
                 const filteredPo = statePo.filter((poItem) => poItem.orderPO_id === poId);
                 const statusPo = filteredPo.find((poStatus) => poStatus.order_status);
+                const filteredPayPo = statePayPo.find((payPoItem) => payPoItem.orderPO_id === poId);
+                console.log(filteredPayPo);
                 return (
                     <div>
                         {statusPo && statusPo.order_status === "RFQ" && statusPo.payment_status === "Nothing to Bill" ? (
-                            <div>
-                                <button onClick={() => navigate(`edit-po/${poId}`)} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-[15px]">
-                                    Edit
-                                </button>
-                                <button onClick={() => navigate(`delete-po/${poId}`)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                    Delete
-                                </button>
-                            </div>
+                            <span className="text-red-600 font-bold">RFQ Isn't Confirmed Yet</span>
                         ) : statusPo && statusPo.order_status === "PO" && statusPo.payment_status === "Nothing to Bill" ? (
-                            <span className="text-yellow-600 font-bold">RFQ Confirmed</span>
+                            <button onClick={() => navigate(`/po/receive-demand-edit/${poId}`)} className="bg-yellow-500 hover:bg-yellow-700 text-dark font-bold py-2 px-4 rounded mr-[15px]">
+                                Validate
+                            </button>
                         ) : statusPo && statusPo.order_status === "PO" && statusPo.payment_status === "Waiting Bills" ? (
-                            <span className="text-green-600 font-bold">Done</span>
+                            <div>
+                                <span className="text-green-600 font-bold mr-[15px]">Done</span>
+
+                                {filteredPayPo ? (
+                                    <span className="text-yellow-600 font-bold mr-[15px]">Bill Created</span>
+                                ) : (
+                                    <button onClick={() => navigate(`/po/create-payment-po/${poId}`)} className="bg-yellow-500 hover:bg-yellow-700 text-dark font-bold py-2 px-4 rounded mr-[15px]">
+                                        Create Bill
+                                    </button>   
+                                )}
+
+                            </div>
                         ) : statusPo && statusPo.order_status === "PO" && statusPo.payment_status === "Fully Billed" ? (
-                            <span className="text-green-600 font-bold">Done</span>
+                            <div>
+                                <span className="text-green-600 font-bold mr-[15px]">Done</span>
+
+                                {filteredPayPo ? (
+                                    <span className="text-blue-600 font-bold mr-[15px]">Bill Paid</span>
+                                ) : (
+                                    <button onClick={() => navigate(`/po/create-payment-po/${poId}`)} className="bg-yellow-500 hover:bg-yellow-700 text-dark font-bold py-2 px-4 rounded mr-[15px]">
+                                        Create Bill
+                                    </button>   
+                                )}
+
+                            </div>
                         ) : (
                             <span className="font-bold">Disabled</span>
                         )}
@@ -97,10 +123,10 @@ export default function PoList() {
 
     return (
         <div style={{ height: 400, width: "100%" }}>
-            <h1 className="font-bold text-xl">Purchase Order</h1>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-[10px]" onClick={() => navigate("create-po")}>
+            <h1 className="font-bold text-xl mb-[20px]">Receive Demand</h1>
+            {/* <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-[10px]" onClick={() => navigate("create-po")}>
                 Create
-            </button>
+            </button> */}
             <DataGrid
                 rows={validRows}
                 columns={columns}

@@ -48,7 +48,7 @@ export default function CreatePo() {
             total: totalPo,
             tanggal: tglPo,
             orderStatus: "RFQ",
-            paymentStatus: "Pending",
+            paymentStatus: "Nothing to Bill",
         }));
 
         setNameSupplier("");

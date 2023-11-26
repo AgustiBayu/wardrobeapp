@@ -20,7 +20,7 @@ export default function EditPo() {
 
     const [filteredMat, setFilteredMat] = useState("");
     const [selectedMat, setSelectedMat] = useState("");
-    const [num, setNum] = useState(0);
+    
     const selectedPo = statePo.find((item) => item.orderPO_id === parseInt(poId, 10));
     const defMat = stateMaterials.filter((item) => item.supplier_id === selectedPo.supplier_id);
 
@@ -53,7 +53,7 @@ export default function EditPo() {
         }
     }, [poId, statePo]);
 
-    const handleCreatePo = async (e) => {
+    const handleEditPo = async (e) => {
         e.preventDefault();
 
         dispatch(poEdit({
@@ -66,7 +66,7 @@ export default function EditPo() {
                 total: totalPo,
                 tanggal: tglPo,
                 orderStatus: "RFQ",
-                paymentStatus: "Pending",
+                paymentStatus: "Nothing to Bill",
             }
         }));
         navigate("/po");
@@ -76,7 +76,7 @@ export default function EditPo() {
         <div className="grid grid-cols-2">
             <div className="w-[400px]">
                 <h1 className="font-bold text-xl mb-3">Edit PO</h1>
-                <form onSubmit={handleCreatePo}>
+                <form onSubmit={handleEditPo}>
                     <div className="mb-3">
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Supplier :

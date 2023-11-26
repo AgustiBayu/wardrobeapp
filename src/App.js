@@ -46,6 +46,13 @@ import PoList from './components/purchase/purchaseOrder/PoList';
 import CreatePo from './components/purchase/purchaseOrder/CreatePo';
 import EditPo from './components/purchase/purchaseOrder/EditPo';
 import DeletePo from './components/purchase/purchaseOrder/DeletePo';
+import ConfirmRfq from './components/purchase/purchaseOrder/ConfirmRfq';
+import EditConfirmRfq from './components/purchase/purchaseOrder/EditConfirmRfq';
+import ReceiveDemand from './components/purchase/purchaseOrder/ReceiveDemand';
+import EditReceiveDemand from './components/purchase/purchaseOrder/EditReceiveDemand';
+import PaymentPo from './components/purchase/paymentPo/PaymentPo';
+import CreatePaymentPo from './components/purchase/paymentPo/CreatePaymentPo';
+import EditPaymentPo from './components/purchase/paymentPo/EditPaymentPo';
 
 export default function App() {
   return (
@@ -57,6 +64,12 @@ export default function App() {
         <div className="flex mt-[64px] ml-[256px] p-[50px]">
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/supplier" element={<Supplier/>}>
+              <Route index element={<SupplierList />} />
+              <Route path="create-supplier" element={<CreateSupplier />} />
+              <Route path="edit-supplier/:supId" element={<EditSupplier />} />
+              <Route path="delete-supplier/:supId" element={<DeleteSupplier />} />
+            </Route>
             <Route path="/products" element={<Products />}>
               <Route index element={<ProductsList />} />
               <Route path="create-product" element={<CreateProducts />} />
@@ -95,12 +108,13 @@ export default function App() {
               <Route path="create-po" element={<CreatePo />} />
               <Route path="edit-po/:poId" element={<EditPo />} />
               <Route path="delete-po/:poId" element={<DeletePo />} />
-            </Route>
-            <Route path="/supplier" element={<Supplier/>}>
-              <Route index element={<SupplierList />} />
-              <Route path="create-supplier" element={<CreateSupplier />} />
-              <Route path="edit-supplier/:supId" element={<EditSupplier />} />
-              <Route path="delete-supplier/:supId" element={<DeleteSupplier />} />
+              <Route path="confirm-rfq" element={<ConfirmRfq />} />
+              <Route path="confirm-rfq-edit/:poId" element={<EditConfirmRfq />} />
+              <Route path="receive-demand" element={<ReceiveDemand />} />
+              <Route path="receive-demand-edit/:poId" element={<EditReceiveDemand />} />
+              <Route path="payment-po" element={<PaymentPo />} />
+              <Route path="create-payment-po/:poId" element={<CreatePaymentPo />} />
+              <Route path="edit-payment-po/:payPoId" element={<EditPaymentPo />} />
             </Route>
           </Routes>
         </div>

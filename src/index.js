@@ -13,6 +13,7 @@ import supplierReducer, { supplierFetch } from "./slices/sliceSupplier";
 import bomReducer, { bomFetch, summaryBomFetch } from "./slices/sliceBom";
 import moReducer, { moFetch } from "./slices/sliceMo";
 import poReducer, { poFetch } from "./slices/slicePo";
+import payPoReducer, { payPoFetch } from "./slices/slicePaymentPo";
 
 const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ const store = configureStore({
     bom: bomReducer,
     mo: moReducer,
     po: poReducer,
+    payPo: payPoReducer,
   },
 });
 
@@ -34,6 +36,7 @@ store.dispatch(bomFetch());
 store.dispatch(summaryBomFetch());
 store.dispatch(moFetch());
 store.dispatch(poFetch());
+store.dispatch(payPoFetch());
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

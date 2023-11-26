@@ -18,7 +18,8 @@ export default function EditMarkAsDone() {
     const [moDate, setMoDate] = useState("");
 
     const updatedProdStock = stateProducts.map((item) => {
-        const selectedProd = stateMo.find((updateItem) => updateItem.product_id === item.product_id);
+        const selectedProd = selectedMo.product_id === item.product_id ? selectedMo : false;
+        console.log(selectedProd);
         if (selectedProd) {
             return {
                 ...item,
@@ -28,7 +29,10 @@ export default function EditMarkAsDone() {
         return item;
     });
 
+    const newProdStock = updatedProdStock.find((item) => item.product_id === selectedMo.product_id)
+
     console.log(updatedProdStock);
+    console.log(newProdStock);
     console.log(moQty);
     console.log(moTotal);
     console.log(moDate);
@@ -54,20 +58,18 @@ export default function EditMarkAsDone() {
             }
         }));
 
-        updatedProdStock.map((item) => {
-            dispatch(productsEdit({
-                product: {
-                    productId: item.product_id,
-                    productName: item.product_name,
-                    categoryId: item.category_id,
-                    price: item.price,
-                    description: item.description,
-                    createdAt: item.created_at,
-                    prodStock: item.product_stock,
-                    imgProd: item.image,
-                }
-            }));
-        })
+        dispatch(productsEdit({
+            product: {
+                productId: newProdStock.product_id,
+                productName: newProdStock.product_name,
+                categoryId: newProdStock.category_id,
+                price: newProdStock.price,
+                description: newProdStock.description,
+                createdAt: newProdStock.created_at,
+                prodStock: newProdStock.product_stock,
+                imgProd: newProdStock.image,
+            }
+        }));
         navigate("/mo/mark-as-todo")
     }
     return (
@@ -84,7 +86,7 @@ export default function EditMarkAsDone() {
                             </button>
                         </div>
                         <div className="flex w-[100%] h-[50px] mt-[15px]">
-                            <button onClick={() => navigate("/materials")} className="w-[100%] text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-md px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                            <button onClick={() => navigate("/mo/mark-as-todo")} className="w-[100%] text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-md px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                                 Batal
                             </button>
                         </div>

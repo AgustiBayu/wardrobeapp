@@ -109,6 +109,15 @@ const SideBar = () => {
                                 <NavLink to="/po" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span className="flex-1 ml-3 whitespace-nowrap">Purchase Order</span>
                                 </NavLink>
+                                <NavLink to="/po/confirm-rfq" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <span className="flex-1 ml-3 whitespace-nowrap">Confirm RFQ</span>
+                                </NavLink>
+                                <NavLink to="/po/receive-demand" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <span className="flex-1 ml-3 whitespace-nowrap">Receive Demand</span>
+                                </NavLink>
+                                <NavLink to="/po/payment-po" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <span className="flex-1 ml-3 whitespace-nowrap">Payment PO</span>
+                                </NavLink>
                             </div>
                         )}
                     </li>

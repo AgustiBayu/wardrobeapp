@@ -56,7 +56,7 @@ export default function EditMarkAsTodo() {
                             </button>
                         </div>
                         <div className="flex w-[100%] h-[50px] mt-[15px]">
-                            <button onClick={() => navigate("/materials")} className="w-[100%] text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-md px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                            <button onClick={() => navigate("/mo/mark-as-todo")} className="w-[100%] text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-md px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                                 Batal
                             </button>
                         </div>
