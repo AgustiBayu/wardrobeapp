@@ -1,16 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { supplierDelete } from "../../../slices/sliceSupplier";
+import { customerDelete } from "../../../slices/sliceCustomer";
 
-export default function DeleteSupplier() {
+export default function DeleteCustomer() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { supId } = useParams();
-    const { deleteStatus } = useSelector((state) => state.supplier);
+    const { cusId } = useParams();
+    const { deleteStatus } = useSelector((state) => state.customer);
 
     const handleDelete = async () => {
-        dispatch(supplierDelete(supId));
-        navigate("/supplier")
+        dispatch(customerDelete(cusId));
+        navigate("/customer")
     }
     return (
         <div className="flex items-center justify-center">
@@ -26,7 +26,7 @@ export default function DeleteSupplier() {
                             </button>
                         </div>
                         <div className="flex w-[100%] h-[50px] mt-[15px]">
-                            <button onClick={() => navigate("/supplier")} className="w-[100%] text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-md px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                            <button onClick={() => navigate("/customer")} className="w-[100%] text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-md px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                                 Batal
                             </button>
                         </div>

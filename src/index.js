@@ -10,10 +10,12 @@ import productsReducer, { productsFetch } from "./slices/sliceProducts";
 import categoryProductsReducer, { categoryProductsFetch } from "./slices/sliceCategoryProducts";
 import materialsReducer, { materialsFetch } from "./slices/sliceMaterials";
 import supplierReducer, { supplierFetch } from "./slices/sliceSupplier";
+import customerReducer, { customerFetch } from "./slices/sliceCustomer";
 import bomReducer, { bomFetch, summaryBomFetch } from "./slices/sliceBom";
 import moReducer, { moFetch } from "./slices/sliceMo";
 import poReducer, { poFetch } from "./slices/slicePo";
 import payPoReducer, { payPoFetch } from "./slices/slicePaymentPo";
+import soReducer, { soFetch } from "./slices/sliceSo";
 
 const store = configureStore({
   reducer: {
@@ -21,10 +23,12 @@ const store = configureStore({
     categoryProducts: categoryProductsReducer,
     materials: materialsReducer,
     supplier: supplierReducer,
+    customer: customerReducer,
     bom: bomReducer,
     mo: moReducer,
     po: poReducer,
     payPo: payPoReducer,
+    so: soReducer,
   },
 });
 
@@ -32,11 +36,13 @@ store.dispatch(productsFetch());
 store.dispatch(categoryProductsFetch());
 store.dispatch(materialsFetch());
 store.dispatch(supplierFetch());
+store.dispatch(customerFetch());
 store.dispatch(bomFetch());
 store.dispatch(summaryBomFetch());
 store.dispatch(moFetch());
 store.dispatch(poFetch());
 store.dispatch(payPoFetch());
+store.dispatch(soFetch());
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

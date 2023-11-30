@@ -76,7 +76,7 @@ export default function ReceiveDemand() {
                 const poId = params.row.id;
                 const filteredPo = statePo.filter((poItem) => poItem.orderPO_id === poId);
                 const statusPo = filteredPo.find((poStatus) => poStatus.order_status);
-                const filteredPayPo = statePayPo.find((payPoItem) => payPoItem.orderPO_id === poId);
+                const filteredPayPo = statePayPo && statePayPo.find((payPoItem) => payPoItem.orderPO_id === poId);
                 console.log(filteredPayPo);
                 return (
                     <div>

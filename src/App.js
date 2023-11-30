@@ -53,6 +53,15 @@ import EditReceiveDemand from './components/purchase/purchaseOrder/EditReceiveDe
 import PaymentPo from './components/purchase/paymentPo/PaymentPo';
 import CreatePaymentPo from './components/purchase/paymentPo/CreatePaymentPo';
 import EditPaymentPo from './components/purchase/paymentPo/EditPaymentPo';
+import Customer from './components/purchase/customer/Customer';
+import CustomerList from './components/purchase/customer/CustomerList';
+import CreateCustomer from './components/purchase/customer/CreateCustomer';
+import EditCustomer from './components/purchase/customer/EditCustomer';
+import DeleteCustomer from './components/purchase/customer/DeleteCustomer';
+import So from './components/purchase/salesOrder/So';
+import SoList from './components/purchase/salesOrder/SoList';
+import CreateSo from './components/purchase/salesOrder/CreateSo';
+import EditSo from './components/purchase/salesOrder/EditSo';
 
 export default function App() {
   return (
@@ -69,6 +78,12 @@ export default function App() {
               <Route path="create-supplier" element={<CreateSupplier />} />
               <Route path="edit-supplier/:supId" element={<EditSupplier />} />
               <Route path="delete-supplier/:supId" element={<DeleteSupplier />} />
+            </Route>
+            <Route path="/customer" element={<Customer/>}>
+              <Route index element={<CustomerList />} />
+              <Route path="create-customer" element={<CreateCustomer />} />
+              <Route path="edit-customer/:cusId" element={<EditCustomer />} />
+              <Route path="delete-customer/:cusId" element={<DeleteCustomer />} />
             </Route>
             <Route path="/products" element={<Products />}>
               <Route index element={<ProductsList />} />
@@ -115,6 +130,19 @@ export default function App() {
               <Route path="payment-po" element={<PaymentPo />} />
               <Route path="create-payment-po/:poId" element={<CreatePaymentPo />} />
               <Route path="edit-payment-po/:payPoId" element={<EditPaymentPo />} />
+            </Route>
+            <Route path="/so" element={<So/>}>
+              <Route index element={<SoList />} />
+              <Route path="create-so" element={<CreateSo />} />
+              <Route path="edit-so/:soId" element={<EditSo />} />
+              <Route path="delete-so/:soId" element={<DeletePo />} />
+              <Route path="confirm-rfq" element={<ConfirmRfq />} />
+              <Route path="confirm-rfq-edit/:soId" element={<EditConfirmRfq />} />
+              <Route path="receive-demand" element={<ReceiveDemand />} />
+              <Route path="receive-demand-edit/:soId" element={<EditReceiveDemand />} />
+              <Route path="payment-po" element={<PaymentPo />} />
+              <Route path="create-payment-so/:soId" element={<CreatePaymentPo />} />
+              <Route path="edit-payment-so/:paySoId" element={<EditPaymentPo />} />
             </Route>
           </Routes>
         </div>
