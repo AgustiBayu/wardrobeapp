@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { soFetch } from "../../../slices/sliceSo";
 
-export default function SoList() {
+export default function ConfirmQ() {
     const dispatch = useDispatch();
     const { stateSo, stateRefreshSo } = useSelector((state) => state.so); //deklarasi state yang diambil dari slicePo.js
     const navigate = useNavigate();
@@ -16,12 +16,12 @@ export default function SoList() {
             month = '' + (d.getMonth() + 1),
             day = '' + d.getDate(),
             year = d.getFullYear();
-
-        if (month.length < 2)
+    
+        if (month.length < 2) 
             month = '0' + month;
-        if (day.length < 2)
+        if (day.length < 2) 
             day = '0' + day;
-
+    
         return [year, month, day].join('-');
     }
 
@@ -42,7 +42,7 @@ export default function SoList() {
                 soTotal: item.total,
                 soTanggal: formatDate(item.order_date),
                 soOrderStat: item.order_status,
-                soPaymentStat: item.payment_status,
+                soInvoiceStat: item.invoice_status,
             };
         });
 
@@ -60,31 +60,25 @@ export default function SoList() {
         { field: "soTotal", headerName: "Total", width: 70 },
         { field: "soTanggal", headerName: "Tanggal Order", width: 120 },
         { field: "soOrderStat", headerName: "Status Order", width: 110 },
-        { field: "soPaymentStat", headerName: "Status Payment", width: 130 },
+        { field: "soInvoiceStat", headerName: "Status Invoice", width: 150 },
         {
             field: "actions",
             headerName: "Actions",
             width: 200,
             renderCell: (params) => {
                 const soId = params.row.id;
-                const filteredSo = stateSo.filter((soItem) => soItem.order_id === soId);
+                const filteredSo = stateSo.filter((poItem) => poItem.order_id === soId);
                 const statusSo = filteredSo.find((soStatus) => soStatus.order_status);
+                console.log(statusSo);
                 return (
                     <div>
-                        {statusSo && statusSo.order_status === "Quotation" && statusSo.payment_status === "Nothing to Bill" ? (
-                            <div>
-                                <button onClick={() => navigate(`edit-so/${soId}`)} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-[15px]">
-                                    Edit
-                                </button>
-                                <button onClick={() => navigate(`delete-so/${soId}`)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                    Delete
-                                </button>
-                            </div>
-                        ) : statusSo && statusSo.order_status === "SO" && statusSo.payment_status === "Nothing to Bill" ? (
+                        {statusSo && statusSo.order_status === "Quotation" && statusSo.invoice_status === "Nothing to Invoice" ? (
+                            <button onClick={() => navigate(`/so/confirm-q-edit/${soId}`)} className="bg-yellow-500 hover:bg-yellow-700 text-dark font-bold py-2 px-4 rounded mr-[15px]">
+                                Confirm Quotation
+                            </button>
+                        ) : statusSo && statusSo.order_status === "SO" && statusSo.invoice_status === "Nothing to Invoice" ? (
                             <span className="text-yellow-600 font-bold">Quotation Confirmed</span>
-                        ) : statusSo && statusSo.order_status === "SO" && statusSo.payment_status === "Waiting Bills" ? (
-                            <span className="text-green-600 font-bold">Done</span>
-                        ) : statusSo && statusSo.order_status === "SO" && statusSo.payment_status === "Fully Billed" ? (
+                        ) : statusSo && statusSo.order_status === "SO" && statusSo.invoice_status === "Fully Invoiced" ? (
                             <span className="text-green-600 font-bold">Done</span>
                         ) : (
                             <span className="font-bold">Disabled</span>
@@ -97,10 +91,10 @@ export default function SoList() {
 
     return (
         <div style={{ height: 400, width: "100%" }}>
-            <h1 className="font-bold text-xl">Sales Order</h1>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-[10px]" onClick={() => navigate("create-so")}>
+            <h1 className="font-bold text-xl mb-[20px]">Confirm RFQ</h1>
+            {/* <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-[10px]" onClick={() => navigate("create-po")}>
                 Create
-            </button>
+            </button> */}
             <DataGrid
                 rows={validRows}
                 columns={columns}

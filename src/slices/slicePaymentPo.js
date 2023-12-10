@@ -143,7 +143,7 @@ const slicePayPo = createSlice({
                 const updatedCategory = state.statePayPo.map((payPo) =>
                     payPo.paymentPO_id === action.payload.paymentPO_id ? action.payload : payPo
                 );
-                state.statePo = updatedCategory;
+                state.statePayPo = updatedCategory;
                 state.editStatus = "success";
                 state.stateRefreshPayPo = Math.random();
                 toast.info("Payment PO Telah Diedit!", {

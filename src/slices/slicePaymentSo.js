@@ -4,20 +4,20 @@ import { toast } from 'react-toastify';
 import { setHeaders, url } from './api';
 
 const initialState = {
-    stateSo: [],
-    stateRefreshSo: 0,
+    statePaySo: [],
+    stateRefreshPaySo: 0,
     status: null,
     createStatus: null,
     editStatus: null,
     deleteStatus: null,
 };
 
-//fetch So
-export const soFetch = createAsyncThunk(
-    "so/soFetch",
+//fetch po
+export const paySoFetch = createAsyncThunk(
+    "paySo/paySoFetch",
     async () => {
         try {
-            const response = await axios.get(`${url}/order`);
+            const response = await axios.get(`${url}/paymentSo`);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -26,13 +26,13 @@ export const soFetch = createAsyncThunk(
     }
 );
 
-//create So
-export const soCreate = createAsyncThunk(
-    "so/soCreate",
+//create po
+export const paySoCreate = createAsyncThunk(
+    "paySo/paySoCreate",
     async (values) => {
         try {
             const response = await axios.post(
-                `${url}/order`,
+                `${url}/paymentSo`,
                 values,
                 setHeaders(),
             );
@@ -47,15 +47,15 @@ export const soCreate = createAsyncThunk(
     }
 );
 
-//edit So
-export const soEdit = createAsyncThunk(
-    "so/soEdit",
+//edit po
+export const paySoEdit = createAsyncThunk(
+    "paySo/paySoEdit",
     async (values) => {
         console.log(values);
         try {
             const response = await axios.put(
-                `${url}/order/${values.so.soId}`,
-                values.so,
+                `${url}/paymentSo/${values.paySo.paySoId}`,
+                values.paySo,
                 setHeaders(),
             );
 
@@ -69,14 +69,14 @@ export const soEdit = createAsyncThunk(
     }
 );
 
-//delete So
-export const soDelete = createAsyncThunk(
-    "so/soDelete",
+//delete po
+export const paySoDelete = createAsyncThunk(
+    "paySo/paySoDelete",
     async (soId) => {
         console.log(soId);
         try {
             const response = await axios.delete(
-                `${url}/order/${soId}`,
+                `${url}/paymentSo/${soId}`,
                 setHeaders(),
             );
 
@@ -84,18 +84,18 @@ export const soDelete = createAsyncThunk(
         } catch (error) {
             console.log(error.response.data);
             toast.error(error.response?.data, {
-                sosition: "bottom-left",
+                position: "bottom-left",
             });
         }
     }
 );
 
-//fetch So by ID
-export const soFetchById = createAsyncThunk(
-    "so/soFetchById",
+//fetch po by ID
+export const paySoFetchById = createAsyncThunk(
+    "paySo/paySoFetchById",
     async (soId) => {
         try {
-            const response = await axios.get(`${url}/order/${soId}`);
+            const response = await axios.get(`${url}/paymentSo/${soId}`);
             console.log(response.data);
             return response.data;
         } catch (error) {
@@ -106,70 +106,70 @@ export const soFetchById = createAsyncThunk(
 );
 
 //redux reducers atau pembuatan state untuk digunakan pada suatu komponen
-const sliceSo = createSlice({
-    name: "so",
+const slicePaySo = createSlice({
+    name: "paySo",
     initialState,
     reducers: {},
     extraReducers: {
-        [soFetch.pending]: (state, action) => {
+        [paySoFetch.pending]: (state, action) => {
             state.status = "pending";
         },
-        [soFetch.fulfilled]: (state, action) => {
-            state.stateSo = action.payload;
+        [paySoFetch.fulfilled]: (state, action) => {
+            state.statePaySo = action.payload;
             state.status = "success";
         },
-        [soFetch.rejected]: (state, action) => {
+        [paySoFetch.rejected]: (state, action) => {
             state.status = "rejected";
         },
-        [soCreate.pending]: (state, action) => {
+        [paySoCreate.pending]: (state, action) => {
             state.status = "pending";
         },
-        [soCreate.fulfilled]: (state, action) => {
-            state.stateSo.push(action.payload);
+        [paySoCreate.fulfilled]: (state, action) => {
+            state.statePaySo.push(action.payload);
             state.createStatus = "success";
-            state.stateRefreshSo = Math.random();
-            toast.success("SO Telah Dibuat!", {
+            state.stateRefreshPaySo = Math.random();
+            toast.success("Peyment SO Telah Dibuat!", {
                 position: "bottom-left"
             });
         },
-        [soCreate.rejected]: (state, action) => {
+        [paySoCreate.rejected]: (state, action) => {
             state.status = "rejected";
         },
-        [soEdit.pending]: (state, action) => {
+        [paySoEdit.pending]: (state, action) => {
             state.editStatus = "pending";
         },
-        [soEdit.fulfilled]: (state, action) => {
+        [paySoEdit.fulfilled]: (state, action) => {
             if (action.payload) {
-                const updatedCategory = state.stateSo.map((so) =>
-                    so.order_id === action.payload.order_id ? action.payload : so
+                const updatedCategory = state.statePaySo.map((paySo) =>
+                    paySo.paymentSO_id === action.payload.paymentSO_id ? action.payload : paySo
                 );
-                state.stateSo = updatedCategory;
+                state.statePaySo = updatedCategory;
                 state.editStatus = "success";
-                state.stateRefreshSo = Math.random();
-                toast.info("SO Telah Diedit!", {
+                state.stateRefreshPaySo = Math.random();
+                toast.info("Payment SO Telah Diedit!", {
                     position: "bottom-left",
                 });
             } else {
-                toast.error("SO Masih Digunakan!", {
+                toast.error("Payment SO Masih Digunakan!", {
                     position: "bottom-left",
                 });
             }
         },
-        [soEdit.rejected]: (state, action) => {
+        [paySoEdit.rejected]: (state, action) => {
             state.editStatus = "rejected";
         },
-        [soDelete.pending]: (state, action) => {
+        [paySoDelete.pending]: (state, action) => {
             state.deleteStatus = "pending";
         },
-        [soDelete.fulfilled]: (state, action) => {
+        [paySoDelete.fulfilled]: (state, action) => {
             if (action.payload) {
-                const newList = state.stateSo.filter(
-                    (item) => item.order_id !== action.payload.order_id
+                const newList = state.statePaySo.filter(
+                    (item) => item.paymentSO_id !== action.payload.paymentSO_id
                 );
-                state.stateSo = newList;
+                state.statePaySo = newList;
                 state.deleteStatus = "success";
-                state.stateRefreshSo = Math.random();
-                toast.success("SO Telah Didelete!", {
+                state.stateRefreshPaySo = Math.random();
+                toast.success("Payment SO Telah Didelete!", {
                     position: "bottom-left",
                 });
             } else {
@@ -178,20 +178,19 @@ const sliceSo = createSlice({
                 });
             }
         },
-        [soDelete.rejected]: (state, action) => {
+        [paySoDelete.rejected]: (state, action) => {
             state.deleteStatus = "rejected";
         },
-        [soFetchById.pending]: (state, action) => {
+        [paySoFetchById.pending]: (state, action) => {
             state.status = "pending";
         },
-        [soFetchById.fulfilled]: (state, action) => {
-            state.stateSelectedProd = action.payload;
+        [paySoFetchById.fulfilled]: (state, action) => {
             state.status = "success";
         },
-        [soFetchById.rejected]: (state, action) => {
+        [paySoFetchById.rejected]: (state, action) => {
             state.status = "rejected";
         },
     },
 });
 
-export default sliceSo.reducer;
+export default slicePaySo.reducer;

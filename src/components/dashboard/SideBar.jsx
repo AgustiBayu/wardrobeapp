@@ -20,7 +20,7 @@ const SideBar = () => {
 
     return (
         <aside id="default-sidebar" className="fixed w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-            <div className="h-full px-3 py-4 overflow-y-auto bg-gray-200 dark:bg-gray-800">
+            <div className="h-full px-3 py-4 overflow-y-auto bg-gray-200 dark:bg-gray-800 pb-[100px]">
                 <ul className="space-y-2 font-medium">
                     <li>
                         <NavLink to="/" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -141,7 +141,7 @@ const SideBar = () => {
                                 <path d="M19 3h-2V1a1 1 0 0 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 0 0 2 0V5h2a1 1 0 1 0 0-2Z" />
                             </svg>
 
-                            <span className="flex-1 ml-3 whitespace-nowrap">Sales</span>
+                            <span className="flex-1 ml-3 whitespace-nowrap">Pembelian Produk</span>
                             {showSoSubgroup ? (
                                 <FaChevronDown />
                             ) : (
@@ -153,14 +153,17 @@ const SideBar = () => {
                                 <NavLink to="/so" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span className="flex-1 ml-3 whitespace-nowrap">Sales Order</span>
                                 </NavLink>
-                                <NavLink to="/so/confirm-rfq" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                    <span className="flex-1 ml-3 whitespace-nowrap">Confirm RFQ</span>
+                                <NavLink to="/so/confirm-q" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <span className="flex-1 ml-3 whitespace-nowrap">Confirm Quotation</span>
+                                </NavLink>
+                                <NavLink to="/so/invoice" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <span className="flex-1 ml-3 whitespace-nowrap">Invoice</span>
+                                </NavLink>
+                                <NavLink to="/so/payment-so" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <span className="flex-1 ml-3 whitespace-nowrap">Payment SO</span>
                                 </NavLink>
                                 <NavLink to="/so/receive-demand" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                    <span className="flex-1 ml-3 whitespace-nowrap">Receive Demand</span>
-                                </NavLink>
-                                <NavLink to="/so/payment-po" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                    <span className="flex-1 ml-3 whitespace-nowrap">Payment SO</span>
+                                    <span className="flex-1 ml-3 whitespace-nowrap">Delivery</span>
                                 </NavLink>
                             </div>
                         )}

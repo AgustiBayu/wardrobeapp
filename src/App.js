@@ -53,15 +53,25 @@ import EditReceiveDemand from './components/purchase/purchaseOrder/EditReceiveDe
 import PaymentPo from './components/purchase/paymentPo/PaymentPo';
 import CreatePaymentPo from './components/purchase/paymentPo/CreatePaymentPo';
 import EditPaymentPo from './components/purchase/paymentPo/EditPaymentPo';
-import Customer from './components/purchase/customer/Customer';
-import CustomerList from './components/purchase/customer/CustomerList';
-import CreateCustomer from './components/purchase/customer/CreateCustomer';
-import EditCustomer from './components/purchase/customer/EditCustomer';
-import DeleteCustomer from './components/purchase/customer/DeleteCustomer';
-import So from './components/purchase/salesOrder/So';
-import SoList from './components/purchase/salesOrder/SoList';
-import CreateSo from './components/purchase/salesOrder/CreateSo';
-import EditSo from './components/purchase/salesOrder/EditSo';
+import Customer from './components/sales/customer/Customer';
+import CustomerList from './components/sales/customer/CustomerList';
+import CreateCustomer from './components/sales/customer/CreateCustomer';
+import EditCustomer from './components/sales/customer/EditCustomer';
+import DeleteCustomer from './components/sales/customer/DeleteCustomer';
+import So from './components/sales/salesOrder/So';
+import SoList from './components/sales/salesOrder/SoList';
+import CreateSo from './components/sales/salesOrder/CreateSo';
+import EditSo from './components/sales/salesOrder/EditSo';
+import ConfirmQ from './components/sales/salesOrder/ConfirmQ';
+import EditConfirmQ from './components/sales/salesOrder/EditConfirmQ';
+import DeleteSo from './components/sales/salesOrder/DeteleSo';
+import Invoice from './components/sales/salesOrder/Invoice';
+import EditInvoice from './components/sales/salesOrder/EditInvoice';
+import PaymentSo from './components/sales/paymentSo/PaymentSo';
+import CreatePaymentSo from './components/sales/paymentSo/CreatePaymentSo';
+import EditPaymentSo from './components/sales/paymentSo/EditPaymentSo';
+import SoReceiveDemand from './components/sales/salesOrder/SoReceiveDemand';
+import EditSoReceiveDemand from './components/sales/salesOrder/EditSoReceiveDemand';
 
 export default function App() {
   return (
@@ -135,14 +145,16 @@ export default function App() {
               <Route index element={<SoList />} />
               <Route path="create-so" element={<CreateSo />} />
               <Route path="edit-so/:soId" element={<EditSo />} />
-              <Route path="delete-so/:soId" element={<DeletePo />} />
-              <Route path="confirm-rfq" element={<ConfirmRfq />} />
-              <Route path="confirm-rfq-edit/:soId" element={<EditConfirmRfq />} />
-              <Route path="receive-demand" element={<ReceiveDemand />} />
-              <Route path="receive-demand-edit/:soId" element={<EditReceiveDemand />} />
-              <Route path="payment-po" element={<PaymentPo />} />
-              <Route path="create-payment-so/:soId" element={<CreatePaymentPo />} />
-              <Route path="edit-payment-so/:paySoId" element={<EditPaymentPo />} />
+              <Route path="delete-so/:soId" element={<DeleteSo />} />
+              <Route path="confirm-q" element={<ConfirmQ />} />
+              <Route path="confirm-q-edit/:soId" element={<EditConfirmQ />} />
+              <Route path="invoice" element={<Invoice />} />
+              <Route path="create-invoice/:soId" element={<EditInvoice />} />
+              <Route path="payment-so" element={<PaymentSo />} />
+              <Route path="create-payment-so/:soId" element={<CreatePaymentSo />} />
+              <Route path="edit-payment-so/:paySoId" element={<EditPaymentSo />} />
+              <Route path="receive-demand" element={<SoReceiveDemand />} />
+              <Route path="receive-demand-edit/:soId" element={<EditSoReceiveDemand />} />
             </Route>
           </Routes>
         </div>

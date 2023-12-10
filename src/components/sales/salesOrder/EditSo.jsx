@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { soCreate } from "../../../slices/sliceSo";
+import { useNavigate, useParams } from "react-router-dom";
+import { soEdit } from "../../../slices/sliceSo";
 
-export default function CreateSo() {
+export default function EditSo() {
     const dispatch = useDispatch();
-    const { createStatus } = useSelector((state) => state.so);
+    const { stateSo, createStatus } = useSelector((state) => state.so);
     const { stateCustomer } = useSelector((state) => state.customer);
     const { stateProducts } = useSelector((state) => state.products);
     const navigate = useNavigate();
+    const { soId } = useParams();
 
     const [nameCustomer, setNameCustomer] = useState(0);
     const [nameProduct, setNameProduct] = useState(0);
@@ -16,9 +17,13 @@ export default function CreateSo() {
     const [qtyDemand, setQtyDemand] = useState(0);
     const [totalSo, setTotalSo] = useState(0);
     const [tglSo, setTglSo] = useState("");
+    const [tglInvoiceSo, setTglInvoiceSo] = useState("");
 
     const [filteredProd, setFilteredProd] = useState("");
     const [selectedProd, setSelectedProd] = useState("");
+
+    const selectedSo = stateSo.find((item) => item.order_id === parseInt(soId, 10));
+    // const defMat = stateProducts.filter((item) => item.product_id === selectedSo.product_id);
 
     useEffect(() => {
         setFilteredProd(nameCustomer ? stateProducts : "");
@@ -37,31 +42,40 @@ export default function CreateSo() {
         setTotalSo(qtyDemand * priceUnit);
     }, [priceUnit, qtyDemand]);
 
+    useEffect(() => {
+        if (selectedSo) {
+            setPriceUnit(selectedSo.price);
+            setQtyDemand(selectedSo.quantity_demand);
+            setTotalSo(selectedSo.total);
+            setTglSo(new Date(new Date(selectedSo.order_date).getTime() + 7 * 60 * 60 * 1000).toISOString().split('T')[0]);
+            setTglInvoiceSo(selectedSo.invoice_date);
+        }
+    }, [soId, stateSo]);
+
     const handleCreateSo = async (e) => {
         e.preventDefault();
 
-        dispatch(soCreate({
-            customerId: nameCustomer,
-            productId: nameProduct,
-            quantityDemand: qtyDemand,
-            total: totalSo,
-            tanggal: tglSo,
-            orderStatus: "Quotation",
-            paymentStatus: "Nothing to Bill",
+        dispatch(soEdit({
+            so: {
+                soId: parseInt(soId ,10),
+                customerId: nameCustomer ? nameCustomer : selectedSo.customer_id,
+                productId: nameProduct ? nameProduct : selectedSo.product_id,
+                quantityDemand: qtyDemand,
+                quantityReceive: selectedSo.quantity_receive,
+                total: totalSo,
+                tanggalOrder: tglSo,
+                tanggalInvoice: tglInvoiceSo,
+                orderStatus: "Quotation",
+                paymentStatus: "Nothing to Invoice",
+            }
         }));
-
-        setNameCustomer("");
-        setNameProduct("");
-        setQtyDemand("");
-        setTotalSo("");
-        setTglSo("");
         navigate("/so");
     };
 
     return (
         <div className="grid grid-cols-2">
             <div className="w-[400px]">
-                <h1 className="font-bold text-xl mb-3">Membuat SO</h1>
+                <h1 className="font-bold text-xl mb-3">Edit SO</h1>
                 <form onSubmit={handleCreateSo}>
                     <div className="mb-3">
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -71,7 +85,7 @@ export default function CreateSo() {
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             onChange={(e) => setNameCustomer(e.target.value)}
                             required
-                            defaultValue="cat"
+                            defaultValue={selectedSo.customer_id}
                         >
                             <option value="cat" disabled hidden>
                                 Pilih Customer
@@ -92,7 +106,7 @@ export default function CreateSo() {
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             onChange={(e) => setNameProduct(e.target.value)}
                             required
-                            defaultValue="cat"
+                            defaultValue={selectedSo.product_id}
                         >
                             <option value="cat" hidden>
                                 Pilih Produk
